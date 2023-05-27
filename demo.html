@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		body{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 30px;
+			height: 100vh;
+			color: aliceblue;
+			background-image: linear-gradient(
+				125deg,#cd56f1,#27ae60,#2980b9,
+				#e74c3c,#3bdabf
+			);
+			background-size: 400%;
+			animation: bgmove 20s infinite;
+		}
+		@keyframes bgmove{
+			0%{
+				background-position: 0% 50%
+			}
+			50%{
+				background-position: 100% 50%
+			}
+			0%{
+				background-position: 0% 50%
+			}
+		}
+	</style>
+</head>
+<body>
+	<h1>Background Animation</h1>
+</body>
+</html>
