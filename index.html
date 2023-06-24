@@ -1,6 +1,48 @@
 <!DOCTYPE html>
 <html>
+	<SCRIPT language=JavaScript> 
+ 
+		function password() { 
+		 
+		var testV = 1; 
+		 
+		var pass1 = prompt('请输入密码:',''); 
+		 
+		while (testV < 3) { 
+		 
+		if (!pass1) 
+		 
+		history.go(-1); 
+		 
+		if (pass1 == "12345") { 
+		 
+		alert('密码正确!'); 
+		 
+		break; 
+		 
+		} 
+		 
+		testV+=-1; 
+		 
+		var pass1 = prompt('密码错误!请重新输入:'); 
+		 
+		} 
+		 
+		if (pass1!="password" & testV ==3) 
+		 
+		history.go(-1); 
+		 
+		return " "; 
+		 
+		} 
+		 
+		document.write(password()); 
+		 
+		</SCRIPT>
 <head>
+	<title>为了这份热爱！</title>
+	<link rel="icon" type="image/x-icon" href="https://s1.chu0.com/src/img/png/b7/b7a5afd0bcd84c2ca4f65359d5aca6f3.png?imageMogr2/auto-orient/thumbnail/!132x132r/gravity/Center/crop/132x132/quality/85/&e=1735488000&token=1srnZGLKZ0Aqlz6dk7yF4SkiYf4eP-YrEOdM1sob:8fqK9ddCh-Ppe3NMSYxSsXuxG5o=" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<style>
 		body{
 			display: flex;
@@ -27,14 +69,96 @@
 				background-position: 0% 50%
 			}
 		}
+		header {
+			background-color: #333;
+			color: #fff;
+			padding: 20px;
+		}
+		#para1  
+    	{
+        	/*这也是一个注释*/
+        	text-align: center;
+        	font-size: 35px;
+        	color:rgb(80, 220, 204);
+    	}
+		section 
+		{
+			padding: 20px;
+			margin: 20px;
+			box-shadow: 0 0 10px rgba(18, 18, 18, 0.3);
+		}
+		footer 
+		{
+			color: #fff;
+			padding: 20px;
+			text-align: center;
+		}
+        .chat-gpt
+		{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin: 20px;
+        }
+        .chat-gpt a,.guide a
+		{
+            color: #000000;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+            background-color: #ffffff;
+            margin-bottom: 10px;
+        }
+		a
+		{
+			text-decoration: none;
+		}
+		a:hover{background-color: lightskyblue;}
+		ul
+		{
+			list-style: none;
+		}
+		section h2,section ul
+		{
+			text-align: centers;
+		}
+		
+
 	</style>
 </head>
 <body>
-	<h1>Background Animation</h1>
+	<header>
+		<h1 id="para1">Hello</h1>
+	</header>
+
+	<section>
+		<h2>我们提供以下功能</h2>
+		<ul>
+			<li>免费ChatGPT入口</li>
+			<li>AI导航</li>
+			<li>将爱传递下去</li>
+		</ul>
+        <div class="chat-gpt">
+            <a href="https://www.changpt.top/" target="_blank">硬核Chat GPT</a>
+            <a href="https://www.supremes.club/" target="_blank">Monica GPT4.0</a>
+            <a href="https://chat.jinshutuan.com/" target="_blank">金属团GPT</a>
+            <a href="https://chat.aidutu.cn/#/chat/1683118164924" target="_blank">AI DuTu</a>
+			
+        </div>
+	</section>
+	<section class="guide">
+			<!--这是AI导航-->
+        	<a  href="https://xcbl.cc/?fb" target="_blank">老北鼻</a>
+        	<a href="https://ai-bot.cn/" target="_blank">AI工具集</a>
+	</section>
 	<footer>
-		<a>本网站已闲置，若您希望使用本域名，请联系我：</a>
-		<li>QQ:3158423326</li>
-		<li>邮箱:wangzi102410@163.com</li>
+		<p>版权所有 © 2023 溪流的GPT仓库</p>
+		<div>
+			<p>联系我:wangzi102410@163.com</p>
+		</div>
 	</footer>
 </body>
 </html>
