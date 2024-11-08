@@ -1,0 +1,9 @@
+body {
+    /*background: url("assetss/images/bg01.jpg") no-repeat center center/ cover;*/
+    background-color: plum;
+}
+
+h1 {
+    margin: 100px auto;
+    text-align: center;
+}
