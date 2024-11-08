@@ -1,9 +1,23 @@
-body {
-    /*background: url("assetss/images/bg01.jpg") no-repeat center center/ cover;*/
-    background-color: plum;
+/* 清除默认样式 */
+* {
+    margin: 0;
+    padding: 0;
 }
 
-h1 {
-    margin: 100px auto;
-    text-align: center;
+ 
+ ul,ol {
+    list-style: none;
 }
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.custom-img-size {
+    width: 100%; /* 根据需要调整宽度 */
+    height: 1000px; /* 根据需要调整高度 */
+    object-fit: cover; /* 保持图片比例并填充整个容器 */
+  }
+
+
