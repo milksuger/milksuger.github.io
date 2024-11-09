@@ -80,6 +80,52 @@
 
     <!-- bootstrap js -->
     <script src="./assetss/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        // // 获取用户IP地址和设备信息
+        // function getUserInfo() {
+        //     // 获取用户IP地址
+        //     fetch('https://api.ipify.org?format=json') // 使用一个可用的IP获取服务
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             const ip = data.ip; // 获取IP地址
+        //             const userAgent = navigator.userAgent; // 获取设备信息
+        //             console.log(`用户IP地址：${ip}`);
+        //             console.log(`设备信息：${userAgent}`);
+
+        //             // 获取用户位置（使用ip138的IP查询服务）
+        //             fetch(`https://ip138.com/iplookup/search.asp?ip=${ip}&action=2`)
+        //                 .then(response => response.text())
+        //                 .then(html => {
+        //                     // 解析HTML以提取位置信息
+        //                     const parser = new DOMParser();
+        //                     const doc = parser.parseFromString(html, 'text/html');
+        //                     const location = doc.querySelector('.ip_location').innerText; // 根据实际的HTML结构调整选择器
+        //                     console.log(`用户位置：${location}`);
+
+        //                     // 创建新的节点并添加到DOM
+        //                     const userInfoNode = document.createElement('div');
+        //                     userInfoNode.innerHTML = `IP: ${ip}, 位置: ${location}, 设备信息: ${userAgent}`;
+        //                     userInfoNode.style.position = 'fixed';
+        //                     userInfoNode.style.bottom = '10px';
+        //                     userInfoNode.style.right = '10px';
+        //                     userInfoNode.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+        //                     userInfoNode.style.padding = '10px';
+        //                     userInfoNode.style.border = '1px solid #ccc';
+        //                     document.body.appendChild(userInfoNode);
+        //                 })
+        //                 .catch(error => console.error(error));
+        //         })
+        //         .catch(error => console.error(error));
+        // }
+
+        // // 调用函数
+        // getUserInfo();
+
+        // function fn() {
+        //     console.log(666);
+        // }
+        // fn();
+    </script>
 </body>
 
 </html>
