@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>博客</title>
   <link rel="stylesheet" href="./assetss/css/common.css">
   <link rel="stylesheet" href="./assetss/css/index.css">
   <link rel="stylesheet" href="./assetss/css/blog.css">
   <style>
-     p {
+    p {
       line-height: 1.8;
       text-indent: 2em;
       border: 1px solid #ccc;
@@ -17,34 +17,42 @@
       margin: 10px 0;
       background-color: #f9f9f9;
       border-radius: 5px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
+
     .blog-post .blog-title {
       font-size: smaller;
       text-align: right;
     }
+
     .blog-post .blog-title::before {
       content: '日期:';
       font-size: smaller;
       margin-right: 10px;
     }
+
     /* 移动端适配样式 */
     @media (max-width: 768px) {
       nav ul {
         flex-direction: column;
       }
+
       nav ul li {
         margin-bottom: 10px;
       }
+
       .box {
         padding: 15px;
       }
+
       p {
         padding: 10px;
       }
+
       .blog-post .blog-title {
         font-size: 14px;
       }
+
       .blog-post-list {
         padding-left: 20px;
       }
