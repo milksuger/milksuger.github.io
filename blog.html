@@ -8,6 +8,48 @@
   <link rel="stylesheet" href="./assetss/css/common.css">
   <link rel="stylesheet" href="./assetss/css/index.css">
   <link rel="stylesheet" href="./assetss/css/blog.css">
+  <style>
+     p {
+      line-height: 1.8;
+      text-indent: 2em;
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin: 10px 0;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .blog-post .blog-title {
+      font-size: smaller;
+      text-align: right;
+    }
+    .blog-post .blog-title::before {
+      content: '日期:';
+      font-size: smaller;
+      margin-right: 10px;
+    }
+    /* 移动端适配样式 */
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+      }
+      nav ul li {
+        margin-bottom: 10px;
+      }
+      .box {
+        padding: 15px;
+      }
+      p {
+        padding: 10px;
+      }
+      .blog-post .blog-title {
+        font-size: 14px;
+      }
+      .blog-post-list {
+        padding-left: 20px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -19,18 +61,21 @@
       <li><a href="./contact.html">联系</a></li>
     </ul>
   </nav>
-  <h1>博客</h1>
   <div class="box">
     <ol>
-      <li>
-        <p>
-          今天和瀚康鸽鸽一起为sys_student表增加了三个字段，他们分别是difficultFlag,provinceHonorFlag,cpc_flag。
-          遇到了很多意想不到的情况
-        </p>
-        <ul>
-          <li>Mapper文件里列名和属性名有错误</li>
-          <li>vue组件的label宽度可以使用 label-width 来控制</li>
-          <li>debug应该使用debug运行模式运行项目</li>
+      <li class="blog-post-container">
+        <div class="blog-post">
+          <h2 class="blog-title">2024-11-09 20:30:00</h2>
+          <h1 class="blog-post-title">哈哈哈✨</h1>
+          <p>
+            今天和瀚康鸽鸽一起为sys_student表增加了三个字段，他们分别是difficultFlag,provinceHonorFlag,cpc_flag。
+            遇到了很多意想不到的情况
+          </p>
+        </div>
+        <ul class="blog-post-list" style="list-style-type: disc; padding-left: 40px;">
+          <li class="blog-post-item" style="font-weight: bold;">Mapper文件里列名和属性名有错误</li>
+          <li class="blog-post-item" style="font-weight: bold;">vue组件的label宽度可以使用 label-width 来控制</li>
+          <li class="blog-post-item" style="font-weight: bold;">debug应该使用debug运行模式运行项目</li>
         </ul>
         <p>
           晚上，和康哥出去吃饭喝酒了，一大碗猪蹄，有大半碗是骨头，不过味道还不错，
@@ -53,7 +98,6 @@
           O对了，今晚买的白酒小刀，500ml的，30块钱，没喝完。一人喝了两杯，大概200ml的样子。瀚康说喝多了第二天早上会难受，会吐，所以我们就没有喝完。
           有点困了，我抓紧将文章提交到git,然后去做别的了，拜拜。
         </p>
-
       </li>
     </ol>
   </div>
