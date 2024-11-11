@@ -1,20 +1,20 @@
 p {
   line-height: 1.5;
   text-indent: 2em;
-  border: 1px solid black;
+  border: 1px solid rgb(214, 212, 212);
   padding: 20px;
   margin: 10px 0;
 }
 
 /*切换主题*/
-*{
+/* *{
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   font-family: "rubik",sans-serif;
   list-style: none;
   text-decoration: none;
-}
+} */
 
 @media screen and (max-width: 768px) {
   
@@ -144,10 +144,10 @@ header{
 p {
   line-height: 1.8;
   text-indent: 2em;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   padding: 20px;
   margin: 10px 0;
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }

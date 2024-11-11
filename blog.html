@@ -108,13 +108,8 @@
     // 切换主题
     function toggle() {
       let html = document.querySelector('html')
-      let currentTheme = html.getAttribute('data-theme');
-
-      if (currentTheme === "light") {
-        html.setAttribute('data-theme', 'dark');
-      } else {
-        html.setAttribute('data-theme', 'light');
-      }
+      let currentTheme = html.dataset.theme;
+      html.dataset.theme = currentTheme === "dark" ? "light" : "dark"
     }
   </script>
 </body>
