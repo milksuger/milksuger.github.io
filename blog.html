@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
+<!-- <html lang="en" data-theme="dark"> -->
 
 <head>
   <meta charset="UTF-8">
@@ -17,33 +18,6 @@
   <meting-js server="netease" type="playlist" id="2692219881" autoplay="true" preload="auto" fixed="true"
     listFolded="true" order="random">
   </meting-js>
-  <style>
-    p {
-      line-height: 1.8;
-      text-indent: 2em;
-      border: 1px solid #ccc;
-      padding: 20px;
-      margin: 10px 0;
-      background-color: #f9f9f9;
-      border-radius: 5px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .blog-post .blog-title {
-      font-size: smaller;
-      text-align: right;
-    }
-
-    .blog-post .blog-title::before {
-      content: '日期:';
-      font-size: smaller;
-      margin-right: 10px;
-    }
-
-    h2 {
-      margin: 20px;
-    }
-  </style>
 </head>
 
 <body>
@@ -55,6 +29,7 @@
       <li><a href="./contact.html">联系</a></li>
     </ul>
   </nav>
+  <button onclick="toggle()" class="toggle">切换主题</button>
   <div class="box">
     <ol>
       <li class="blog-post-container">
@@ -103,13 +78,45 @@
         <p>
           晚上吃的西餐的手抓饼，加的番茄酱和有点多，甜得很。
           今天，距离秋招还有344天。
-          希望将来可以把这个网站打造成一个技术博客。
+          希望将来可以把个网站打造成一个技术博客。
+        </p>
+        <h2></h2>
+      </li>
+
+      <li class="blog-post-container">
+        <div class="blog-post">
+          <h2 class="blog-title">2024-11-11 15:04:00</h2>
+          <h1 class="blog-post-title">✨</h1>
+        </div>
+        <p>
+          今天多云，几乎没有太阳。
+        </p>
+        <span>来一张照片</span>
+        <img src="https://i0.hippopx.com/photos/179/171/625/sparkler-holding-hands-firework-preview.jpg" alt="">
+        <p>
+          继续学习Pink老师的JavaScript,目前是进阶课的第三天，也就是本套JS课程的倒数第二天。
+          今日重点:原型和原型链。JS的继承机制。
         </p>
         <h2></h2>
 
       </li>
     </ol>
   </div>
+
+
+  <script>
+    // 切换主题
+    function toggle() {
+      let html = document.querySelector('html')
+      let currentTheme = html.getAttribute('data-theme');
+
+      if (currentTheme === "light") {
+        html.setAttribute('data-theme', 'dark');
+      } else {
+        html.setAttribute('data-theme', 'light');
+      }
+    }
+  </script>
 </body>
 
 </html>

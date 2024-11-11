@@ -5,3 +5,176 @@ p {
   padding: 20px;
   margin: 10px 0;
 }
+
+/*切换主题*/
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "rubik",sans-serif;
+  list-style: none;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+  
+}
+
+/* 全局样式变量 */
+:root{
+  /* 背景色/边框颜色/主色/辅色/其他色 */
+  --color-border:#deddee;
+  --color-main:#ffae00;
+  --color-auxiliary:#00ff11;
+  --color-other:#00ffdd;
+  --color-bg:#1f1f21;
+  --font-color-main:#ffffff;
+  --font-color-secondary:#ffffffb3;
+  --font-color-auxiliary:#ffffff3b;
+  /* 字号和字体颜色 */
+  --font-root:1rem;
+  --font-32px:2rem;
+  --font-20px:1.25rem;
+  --font-18px:1.125rem;
+  --font-16px:1rem;
+  --font-14px:.875rem;
+  --font-12px:.75rem;
+  --font-10px:.625rem;
+  /* 层级 */
+  --z-index10:10;
+  --z-index100:100;
+  --z-index1000:1000;
+  /* 间距 */
+  --spacing-2:.125rem;
+  --spacing-4:.25rem;
+  --spacing-6:.375rem;
+  --spacing-8:.5rem;
+  --spacing-10:.625rem;
+  --spacing-12:.75rem;
+  --spacing-14:.875rem;
+  --spacing-16:1rem;
+  --spacing-20:1.25rem;
+  --spacing-24:1.5rem;
+  --spacing-30:1.875rem;
+  --spacing-40:2.5rem;
+  --spacing-50:3.125rem;
+  --spacing-60:3.75rem;
+}
+/* 集合属性（主题样式） */
+[data-theme="dark"] {
+  --color-bg:#1f1f21;
+  --color-btn:#ffffff;
+  --color-btn-font:#333333;
+  --color-border:#deddee;
+  --color-main:#ffae00;
+  --color-auxiliary:#00ff11;
+  --color-other:#00ffdd;
+  --font-color-main:#ffffff;
+  --font-color-secondary:#ffffffb3;
+  --font-color-auxiliary:#ffffff3b;
+}
+[data-theme="light"] {
+  --color-bg:#ffffff;
+  --color-btn:#000000;
+  --color-btn-font:#ffffff;
+  --color-border:#deddee;
+  --color-main:#ffae00;
+  --color-auxiliary:#00ff11;
+  --color-other:#00ffdd;
+  --font-color-main:#333333;
+  --font-color-secondary:#777777;
+  --font-color-auxiliary:#aaaaaa;
+}
+
+/* 切换按钮 */
+.toggle{
+  border: none;
+  padding: var(--spacing-6);
+  font-size: var(--font-14px);
+  background-color: var(--color-btn);
+  color: var(--color-btn-font);
+  border-radius: .25rem;
+  transition: all ease .45s;
+}
+
+body{
+  background: var(--color-bg);
+  color: var(--font-color-main);
+  overflow-x: hidden;
+  transition: all 0.5s ease-in-out;
+}
+
+/* 标题部分 */
+header{
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  background: transparent;
+  z-index: var(--z-index10);
+  font-size: var(--font-14px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-30) 15%;
+  transition: all ease .45s;
+}
+.logo{
+  color: var(--font-color-main);
+  font-weight: 600;
+  font-size: var(--font-32px);
+}
+.logo span{
+  color: var(--color-main);    
+}
+.nav-bar{
+  display: flex;
+}
+.nav-bar a{
+  font-size: var(--font-14px);
+  color: var(--font-color-secondary);
+  margin:0 var(--spacing-24);
+  transition: all ease.5s;
+}
+.nav-bar a:hover{
+  color: var(--color-main);
+  font-weight: 600;
+}
+
+p {
+  line-height: 1.8;
+  text-indent: 2em;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 10px 0;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.blog-post .blog-title {
+  font-size: smaller;
+  text-align: right;
+}
+
+.blog-post .blog-title::before {
+  content: '日期:';
+  font-size: smaller;
+  margin-right: 10px;
+}
+
+h2 {
+  margin: 20px;
+}
+
+li {
+  padding: 30px 0;
+}
+
+/*图片*/
+img {
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+
