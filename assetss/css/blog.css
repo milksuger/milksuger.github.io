@@ -177,4 +177,8 @@ img {
   margin: 10px 0;
 }
 
+.change-theme {
+  margin-left: 10px;
+  position: fixed;
+}
 
