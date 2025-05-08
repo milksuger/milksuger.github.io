@@ -1,253 +1,167 @@
+<!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI对话系统</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/echarts@5.4.3/dist/echarts.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <style>
-      .chat-container {
-          height: calc(100vh - 180px);
-      }
-      .message-animation {
-          animation: fadeIn 0.3s ease-in-out;
-      }
-      @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-      }
-      .send-animation {
-          animation: sendPulse 0.5s ease-out;
-      }
-      @keyframes sendPulse {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.05); }
-          100% { transform: scale(1); }
-      }
-      .typing-indicator {
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background-color: #6b7280;
-          margin-right: 4px;
-          animation: typing 1.4s infinite ease-in-out;
-      }
-      .typing-indicator:nth-child(2) {
-          animation-delay: 0.2s;
-      }
-      .typing-indicator:nth-child(3) {
-          animation-delay: 0.4s;
-          margin-right: 0;
-      }
-      @keyframes typing {
-          0%, 60%, 100% { transform: translateY(0); }
-          30% { transform: translateY(-5px); }
-      }
-    </style>
-  </head>
-  <body class="bg-gray-100">
-    <div class="container mx-auto max-w-6xl p-4">
-      <!-- 头部区域 -->
-      <header
-        class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg p-4 mb-6 flex items-center justify-between"
-      >
-        <div class="flex items-center">
-          <div class="relative">
-            <img
-              src="https://aidev.gemcoder.com/staticResource/echoAiSystemImages/6ff34e70d37647a9839c03b1c9ae710a.png"
-              alt="AI头像"
-              class="w-12 h-12 rounded-full object-cover mr-3 border-2 border-white shadow-md"
-            />
-            <span
-              class="absolute bottom-0 right-3 w-3 h-3 bg-green-400 rounded-full border-2 border-white"
-            >
-            </span>
-          </div>
-          <h1 class="text-2xl font-bold text-white">AI对话系统</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI代码编辑器 - 智能代码生成工具">
+    <title>AI代码编辑器</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" as="style">
+    <!-- Monaco Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js" defer></script>
+</head>
+<body>
+<div class="editor-root">
+    <aside class="sidebar">
+        <nav class="sidebar-nav">
+            <button class="sidebar-btn" onclick="toggleHistory()" title="历史记录"><i class="fas fa-history"></i></button>
+            <button class="sidebar-btn" onclick="toggleModelPanel()" title="模型列表"><i class="fas fa-robot"></i></button>
+            <button class="sidebar-btn" onclick="openSettings()" title="接口设置"><i class="fas fa-cog"></i></button>
+            <button class="sidebar-btn" onclick="toggleTheme()" title="切换主题"><i class="fas fa-moon"></i></button>
+        </nav>
+    </aside>
+    <header class="topbar">
+        <span class="project-title">AI代码生成器</span>
+        <div class="topbar-actions">
+            <!-- 可扩展全局操作按钮 -->
+            <button class="main-generate-btn" style="margin-left: 18px; background: #fff; color: #2563eb; border: 1.5px solid #2563eb; font-size: 1rem; padding: 0.4rem 1.2rem;" onclick="window.location.href='about.html'">关于</button>
         </div>
-        <div class="flex space-x-3">
-          <button
-            class="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-all duration-200"
-          >
-            <i class="fas fa-cog"> </i>
-          </button>
-          <button
-            class="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-all duration-200"
-          >
-            <i class="fas fa-history"> </i>
-          </button>
+    </header>
+    <main class="main-area">
+        <section class="input-panel">
+            <h2>输入你的需求</h2>
+            <textarea id="userInput" placeholder="请详细描述你想要生成的网页或功能，例如：'创建一个登录页面，包含用户名和密码输入框，以及登录按钮'"></textarea>
+            <div class="btn-row input-btn-row">
+                <button class="main-generate-btn polish-btn" id="polishBtn" onclick="polishUserInput()">润色需求</button>
+                <button class="main-generate-btn" onclick="generateCode()">生成代码</button>
+                <button class="main-generate-btn" id="generatePromptBtn" onclick="openPromptDialog()">生成需求</button>
+            </div>
+            <div id="polishResultWrapper" style="width:100%;margin:10px 0 0 0;display:none;flex-direction:column;gap:8px;">
+                <div id="polishResult" style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px;padding:0.8rem 1rem;min-height:48px;color:#23272f;font-size:1rem;white-space:pre-wrap;"></div>
+                <button class="main-generate-btn" id="applyPolishBtn" style="align-self:flex-end;width:140px;background:#28a745;color:#fff;display:none;" onclick="applyPolishResult()">应用到输入框</button>
+            </div>
+        </section>
+        <section class="output-panel">
+            <div class="output-toolbar">
+                <div class="view-switch">
+                    <button id="previewBtn" class="active" onclick="switchView('preview')">网页效果</button>
+                    <button id="codeBtn" onclick="switchView('code')">代码</button>
+                </div>
+                <div class="toolbar">
+                    <button onclick="copyCode()" title="复制代码"><i class="fas fa-copy"></i></button>
+                    <button onclick="formatCode()" title="格式化代码"><i class="fas fa-code"></i></button>
+                    <button onclick="downloadCode()" title="下载代码"><i class="fas fa-download"></i></button>
+                    <button onclick="previewInNewTab()" title="全屏预览"><i class="fas fa-external-link-alt"></i></button>
+                    <button onclick="saveCodeSnippet()" title="保存代码片段"><i class="fas fa-save"></i></button>
+                    <button onclick="compareVersions()" title="版本对比"><i class="fas fa-code-branch"></i></button>
+                </div>
+            </div>
+            <div class="loading" id="loading">正在生成代码，请稍候...</div>
+            <div id="previewArea" class="view-area"></div>
+            <div class="code-wrapper view-area" style="display:none" id="codeWrapper">
+                <div id="monacoEditor" style="width: 100%; height: 100%;"></div>
+            </div>
+        </section>
+    </main>
+    <footer class="statusbar">
+        <span>当前模型：<span id="statusModel">-</span></span>
+    </footer>
+</div>
+
+<div class="history-panel" id="historyPanel">
+    <h2>历史记录</h2>
+    <div id="historyList"></div>
+</div>
+
+<div class="settings-modal" id="settingsModal">
+    <div class="settings-panel">
+        <button class="close-btn" onclick="closeSettings()">&times;</button>
+        <h2>接口设置</h2>
+        <div class="input-group">
+            <label for="apiKeyInput">API Key</label>
+            <input type="password" id="apiKeyInput" placeholder="请输入你的API Key">
         </div>
-      </header>
-      <!-- 聊天主区域 -->
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-        <!-- 消息显示区域 -->
-        <div
-          id="chat-messages"
-          class="chat-container overflow-y-auto p-6 space-y-6"
-        >
-          <!-- 欢迎消息 -->
-          <div class="message-animation flex">
-            <div class="flex-shrink-0 mr-4">
-              <img
-                src="https://aidev.gemcoder.com/staticResource/echoAiSystemImages/a90da53e5382df4e0705ab1e11d9808d.png"
-                alt="AI头像"
-                class="w-10 h-10 rounded-full object-cover border-2 border-blue-100 shadow-sm"
-              />
-            </div>
-            <div
-              class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-4 max-w-3/4 shadow-sm"
-            >
-              <p class="text-gray-800">
-                您好！我是AI助手，很高兴为您服务。请问有什么可以帮您的吗？
-              </p>
-              <p class="text-xs text-gray-400 mt-2">刚刚</p>
-            </div>
-          </div>
+        <div class="input-group">
+            <label for="baseUrlInput">BaseURL</label>
+            <input type="text" id="baseUrlInput" placeholder="如：https://api.siliconflow.cn/v1/chat/completions">
         </div>
-        <!-- 输入区域 -->
-        <div
-          class="border-t border-gray-100 p-4 bg-gradient-to-b from-gray-50 to-white"
-        >
-          <div class="flex items-center space-x-3">
-            <button
-              class="p-3 rounded-full bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200"
-            >
-              <i class="fas fa-plus"> </i>
-            </button>
-            <div class="flex-grow relative">
-              <textarea
-                id="user-input"
-                class="w-full border border-gray-200 rounded-xl py-3 px-5 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none shadow-sm hover:shadow-md transition-all duration-200"
-                rows="1"
-                placeholder="输入您的问题..."
-                style="min-height: 48px;"
-              >
-              </textarea>
-              <button
-                class="absolute right-3 bottom-3 p-1 text-gray-500 hover:text-blue-500 transition-colors duration-200"
-              >
-                <i class="fas fa-microphone"> </i>
-              </button>
-            </div>
-            <button
-              id="send-btn"
-              class="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-md hover:shadow-lg transition-all duration-200 send-animation"
-            >
-              <i class="fas fa-paper-plane"> </i>
-            </button>
-          </div>
-          <div
-            class="flex justify-between items-center mt-3 text-xs text-gray-400"
-          >
-            <div class="flex space-x-3">
-              <button
-                class="hover:text-blue-500 transition-colors duration-200"
-              >
-                <i class="fas fa-keyboard"> </i>
-                快捷指令
-              </button>
-            </div>
-            <div>
-              <span id="char-count" class="font-medium"> 0/1000 </span>
-            </div>
-          </div>
+        <div class="input-group">
+            <label for="modelInput">模型名称</label>
+            <input type="text" id="modelInput" placeholder="如：deepseek-ai/DeepSeek-R1-Distill-Qwen-7B">
         </div>
-      </div>
+        <div class="btn-group">
+            <button class="save-btn" onclick="saveSettings()">保存</button>
+            <button class="default-btn" onclick="useDefaultConfig()">使用默认配置</button>
+        </div>
     </div>
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        var userInput = document.getElementById('user-input');
-        var sendBtn = document.getElementById('send-btn');
-        var chatMessages = document.getElementById('chat-messages');
-        var charCount = document.getElementById('char-count');
-        // 自动调整输入框高度
-        userInput.addEventListener('input', function () {
-          this.style.height = 'auto';
-          this.style.height = this.scrollHeight + 'px';
+</div>
 
-          // 更新字符计数
-          charCount.textContent = "".concat(this.value.length, "/1000");
-        });
-        // 发送消息
-        function sendMessage() {
-          var message = userInput.value.trim();
-          if (message === '') return;
+<div class="toast" id="toast"></div>
 
-          // 添加用户消息
-          addMessage(message, 'user');
+<div class="model-panel" id="modelPanel">
+    <h2>模型列表</h2>
+    <div id="modelList" class="model-list"></div>
+</div>
 
-          // 清空输入框
-          userInput.value = '';
-          userInput.style.height = 'auto';
-          charCount.textContent = '0/1000';
+<!-- 生成需求弹窗 -->
+<div class="prompt-modal" id="promptModal" style="display:none;">
+    <div class="prompt-panel">
+        <button class="close-btn" onclick="closePromptDialog()">&times;</button>
+        <h2>AI帮你写需求</h2>
+        <textarea id="promptInput" placeholder="你可以简单描述你的想法（可选）"></textarea>
+        <button class="main-generate-btn" onclick="generatePrompt()" id="generatePromptBtnDialog">生成需求文档</button>
+        <div class="btn-group">
+            <button class="default-btn" onclick="closePromptDialog()">关闭</button>
+        </div>
+    </div>
+</div>
 
-          // 显示AI正在输入状态
-          var typingIndicator = showTypingIndicator();
+<!-- 移除重复的prompt-result-window，合并到prompt-modal中 -->
+<div class="prompt-result-window" id="promptResultWindow" style="display:none;">
+    <div class="prompt-result-content">
+        <button class="close-btn" onclick="closePromptResultWindow()">&times;</button>
+        <h2>AI帮你写需求</h2>
+        <textarea id="promptResultInput" placeholder="你可以简单描述你的想法（可选）"></textarea>
+        <div id="promptResultText" class="prompt-result-text"></div>
+        <div class="btn-group">
+            <button class="main-generate-btn" onclick="generatePrompt()" id="generatePromptBtnResult">生成需求文档</button>
+            <button class="save-btn" onclick="usePromptResultText()">使用此需求</button>
+            <button class="default-btn" onclick="closePromptResultWindow()">关闭</button>
+        </div>
+    </div>
+</div>
 
-          // 模拟AI回复
-          setTimeout(function () {
-            removeTypingIndicator(typingIndicator);
-            var responses = ["我理解您的问题了。让我为您详细解答...", "这是一个很好的问题！根据我的分析...", "感谢您的提问。关于这个问题...", "我明白您的困惑了。让我帮您梳理一下..."];
-            var randomResponse = responses[Math.floor(Math.random() * responses.length)];
-            addMessage(randomResponse, 'ai');
-          }, 1500 + Math.random() * 2000);
+<!-- 右侧浮动润色结果窗口 -->
+<div id="polishFloatWindow" style="display:none;position:fixed;top:60px;right:32px;width:370px;max-width:90vw;z-index:3001;background:#fff;border-radius:14px;box-shadow:0 4px 24px 0 #60a5fa33;padding:1.5rem 1.2rem 1.2rem 1.2rem;flex-direction:column;gap:1.1rem;">
+    <button id="closePolishFloatBtn" style="position:absolute;top:10px;right:10px;width:32px;height:32px;border:none;border-radius:50%;background:#e2e8f0;color:#2563eb;font-size:1.2rem;cursor:pointer;">×</button>
+    <h3 style="margin:0 0 1rem 0;font-size:1.1rem;color:#2563eb;text-align:center;">AI润色结果</h3>
+    <div id="polishFloatResult" style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px;padding:0.8rem 1rem;min-height:48px;color:#23272f;font-size:1rem;white-space:pre-wrap;max-height:48vh;overflow-y:auto;"></div>
+    <button class="main-generate-btn" id="applyPolishFloatBtn" style="width:140px;background:#28a745;color:#fff;align-self:flex-end;display:none;">应用到输入框</button>
+</div>
+
+<!-- 添加 Font Awesome 图标库 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!-- 添加 Prettier 代码格式化库 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prettier/2.8.8/prettier.min.js" defer></script>
+<script src="main.js" defer></script>
+<script src="editor.js" defer></script>
+<script>
+// 使用立即执行函数避免全局变量污染
+(function() {
+    function previewInNewTab() {
+        if (window.editor) {
+            const code = editor.getValue();
+            const win = window.open();
+            win.document.open();
+            win.document.write(code);
+            win.document.close();
         }
-        // 添加消息到聊天区域
-        function addMessage(content, sender) {
-          var messageDiv = document.createElement('div');
-          messageDiv.className = 'message-animation flex';
-          if (sender === 'user') {
-            messageDiv.innerHTML = "\n                        <div class=\"flex-grow\"></div>\n                        <div class=\"bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-2xl p-4 max-w-3/4 shadow-md\">\n                            <p>".concat(content, "</p>\n                            <p class=\"text-xs text-blue-100 mt-2\">\u521A\u521A</p>\n                        </div>\n                        <div class=\"flex-shrink-0 ml-4\">\n                            <img src=\"https://aidev.gemcoder.com/staticResource/echoAiSystemImages/c66d37a79fbdc893c1ee01dcdf270a91.png\" \n                                 alt=\"\u7528\u6237\u5934\u50CF\" \n                                 class=\"w-10 h-10 rounded-full object-cover border-2 border-blue-100 shadow-sm\">\n                        </div>\n                    ");
-            messageDiv.classList.add('justify-end');
-          } else {
-            messageDiv.innerHTML = "\n                        <div class=\"flex-shrink-0 mr-4\">\n                            <img src=\"https://aidev.gemcoder.com/staticResource/echoAiSystemImages/a90da53e5382df4e0705ab1e11d9808d.png\" \n                                 alt=\"AI\u5934\u50CF\" \n                                 class=\"w-10 h-10 rounded-full object-cover border-2 border-blue-100 shadow-sm\">\n                        </div>\n                        <div class=\"bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-4 max-w-3/4 shadow-sm\">\n                            <p class=\"text-gray-800\">".concat(content, "</p>\n                            <p class=\"text-xs text-gray-400 mt-2\">\u521A\u521A</p>\n                        </div>\n                    ");
-          }
-          chatMessages.appendChild(messageDiv);
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        // 显示AI正在输入状态
-        function showTypingIndicator() {
-          var typingDiv = document.createElement('div');
-          typingDiv.className = 'message-animation flex';
-          typingDiv.innerHTML = "\n                    <div class=\"flex-shrink-0 mr-4\">\n                        <img src=\"https://aidev.gemcoder.com/staticResource/echoAiSystemImages/a90da53e5382df4e0705ab1e11d9808d.png\" \n                             alt=\"AI\u5934\u50CF\" \n                             class=\"w-10 h-10 rounded-full object-cover border-2 border-blue-100 shadow-sm\">\n                    </div>\n                    <div class=\"bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-4 max-w-3/4 shadow-sm\">\n                        <div class=\"flex items-center\">\n                            <div class=\"typing-indicator\"></div>\n                            <div class=\"typing-indicator\"></div>\n                            <div class=\"typing-indicator\"></div>\n                        </div>\n                    </div>\n                ";
-          chatMessages.appendChild(typingDiv);
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-          return typingDiv;
-        }
-
-        // 移除AI正在输入状态
-        function removeTypingIndicator(typingDiv) {
-          if (typingDiv && typingDiv.parentNode) {
-            typingDiv.parentNode.removeChild(typingDiv);
-          }
-        }
-        // 点击发送按钮
-        sendBtn.addEventListener('click', function () {
-          sendBtn.classList.add('send-animation');
-          setTimeout(function () {
-            sendBtn.classList.remove('send-animation');
-          }, 500);
-          sendMessage();
-        });
-
-        // 按Enter键发送消息
-        userInput.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendBtn.classList.add('send-animation');
-            setTimeout(function () {
-              sendBtn.classList.remove('send-animation');
-            }, 500);
-            sendMessage();
-          }
-        });
-      });
-    </script>
-  </body>
-</html>
+    }
+    // 将函数暴露到全局作用域
+    window.previewInNewTab = previewInNewTab;
+})();
+</script>
+</body>
+</html> 
