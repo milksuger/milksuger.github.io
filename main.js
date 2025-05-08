@@ -157,7 +157,7 @@ async function callDeepSeekApiStream(prompt, previewArea) {
     const userBaseUrl = localStorage.getItem('userBaseUrl');
     const userModelName = localStorage.getItem('userModelName');
     const apiKey = userApiKey || 'sk-acttqosqchyktyrnsvkiioqfwbxnherzspkjkrykqtgjjnli';
-    const baseUrl = userBaseUrl || 'https://api.siliconflow.cn/v1/chat/completions';
+    const baseUrl = userBaseUrl || 'https://curly-king-9d31.wangzi102410.workers.dev/';
     const model = userModelName || 'deepseek-ai/DeepSeek-R1-Distill-Qwen-7B';
     const response = await fetch(baseUrl, {
         method: 'POST',
@@ -341,7 +341,7 @@ function saveSettings() {
 
 function useDefaultConfig() {
     document.getElementById('apiKeyInput').value = 'sk-acttqosqchyktyrnsvkiioqfwbxnherzspkjkrykqtgjjnli';
-    document.getElementById('baseUrlInput').value = 'https://api.siliconflow.cn/v1/chat/completions';
+    document.getElementById('baseUrlInput').value = 'https://curly-king-9d31.wangzi102410.workers.dev/';
     document.getElementById('modelInput').value = 'deepseek-ai/DeepSeek-R1-Distill-Qwen-7B';
     showToast('已填充默认配置');
 }
@@ -536,7 +536,7 @@ async function generatePrompt() {
         const userBaseUrl = localStorage.getItem('userBaseUrl');
         const userModelName = localStorage.getItem('userModelName');
         const apiKey = userApiKey || 'sk-acttqosqchyktyrnsvkiioqfwbxnherzspkjkrykqtgjjnli';
-        const baseUrl = userBaseUrl || 'https://api.siliconflow.cn/v1/chat/completions';
+        const baseUrl = userBaseUrl || 'https://curly-king-9d31.wangzi102410.workers.dev/';
         const model = userModelName || 'deepseek-ai/DeepSeek-R1-Distill-Qwen-7B';
         const messages = [
             { role: 'system', content: '你是一个专业的产品经理助理，请根据用户的简要描述，帮他完善成详细的产品需求文档，要求结构清晰、条理分明，适合直接用于AI代码生成。' },
@@ -638,7 +638,7 @@ async function polishUserInput() {
         const userBaseUrl = localStorage.getItem('userBaseUrl');
         const userModelName = localStorage.getItem('userModelName');
         const apiKey = userApiKey || 'sk-acttqosqchyktyrnsvkiioqfwbxnherzspkjkrykqtgjjnli';
-        const baseUrl = userBaseUrl || 'https://api.siliconflow.cn/v1/chat/completions';
+        const baseUrl = userBaseUrl || 'https://curly-king-9d31.wangzi102410.workers.dev/';
         const model = userModelName || 'deepseek-ai/DeepSeek-R1-Distill-Qwen-7B';
         const response = await fetch(baseUrl, {
             method: 'POST',
