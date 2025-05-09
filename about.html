@@ -3,111 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>关于 - AI代码生成器</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Cursor提示词网站 - 关于作者">
+    <title>关于作者 - Cursor提示词网站</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/best-practices.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        html, body {
-            height: auto !important;
-            min-height: 100vh;
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
         body {
-            background: #f8fafc;
+            background: #f6f8fa;
         }
-        .about-container {
-            max-width: 600px;
-            margin: 60px auto 0 auto;
+        .about__container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 60vh;
+            padding: 80px 0 20px 0;
+        }
+        .about-card {
             background: #fff;
             border-radius: 18px;
-            box-shadow: 0 4px 24px 0 #60a5fa22;
-            padding: 2.5rem 2.2rem 2.2rem 2.2rem;
+            box-shadow: 0 4px 24px rgba(37,99,235,0.10);
+            padding: 36px 32px 32px 32px;
+            max-width: 420px;
+            width: 100%;
+            position: relative;
+        }
+        .about-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#2563eb 60%,#60a5fa 100%);
             display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2.8rem;
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 8px rgba(37,99,235,0.18);
         }
         .about-title {
-            font-size: 2rem;
-            color: #2563eb;
-            font-weight: 900;
             text-align: center;
-            margin-bottom: 1.2rem;
-        }
-        .about-section {
-            font-size: 1.08rem;
-            color: #23272f;
-            line-height: 1.8;
-        }
-        .about-author {
-            margin-top: 1.5rem;
-            font-size: 1.02rem;
-            color: #666;
-            text-align: right;
-        }
-        .about-back {
-            display: inline-block;
-            margin-top: 2.2rem;
+            margin-top: 48px;
+            margin-bottom: 18px;
+            font-size: 2rem;
+            font-weight: 700;
             color: #2563eb;
-            border: 1.5px solid #2563eb;
-            background: #fff;
-            border-radius: 8px;
-            padding: 0.5rem 1.5rem;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background 0.2s, color 0.2s;
         }
-        .about-back:hover {
-            background: #2563eb;
-            color: #fff;
+        .about-info h3 {
+            margin-top: 22px;
+            margin-bottom: 8px;
+            font-size: 1.15rem;
+            color: #1e293b;
+            font-weight: 600;
+            border-left: 4px solid #2563eb;
+            padding-left: 8px;
+        }
+        .about-info p, .about-info ul {
+            margin: 0 0 8px 0;
+            color: #222;
+            font-size: 1rem;
+        }
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .contact-info i {
+            color: #2563eb;
+            font-size: 1.1em;
+        }
+        .about-info ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            list-style: none;
+            padding: 0;
+        }
+        .about-info ul li {
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-size: 0.98rem;
+            margin: 0;
+        }
+        @media (max-width: 600px) {
+            .about-card {
+                padding: 24px 8px 20px 8px;
+                max-width: 98vw;
+            }
+            .about-title {
+                font-size: 1.3rem;
+            }
+            .about-avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+                top: -30px;
+            }
         }
     </style>
 </head>
 <body>
-    <a href="index.html" class="about-back" style="position:fixed;top:28px;left:32px;z-index:1001;box-shadow:0 2px 8px 0 #60a5fa22;">返回首页</a>
-    <div style="display:flex;justify-content:center;align-items:flex-start;gap:32px;max-width:1100px;margin:30px auto 0 auto;">
-        <div class="about-container" style="flex:1 1 380px;min-width:320px;max-width:480px;box-sizing:border-box;">
-            <div class="about-title">关于 AI代码生成器</div>
-            <div class="about-section">
-                <b>AI代码生成器</b> 是一款基于大语言模型的智能网页代码生成与编辑工具。<br>
-                你只需输入需求描述，AI即可为你生成高质量的前端页面代码，并支持代码预览、格式化、下载、历史记录、需求润色等多种实用功能。<br>
-                本工具适合开发者、产品经理、设计师等各类用户，助力高效开发与原型设计。
+    <div id="nav-placeholder"></div>
+    <script>
+      fetch('nav.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('nav-placeholder').innerHTML = data;
+        });
+    </script>
+
+    <main>
+        <section id="about" class="about" aria-labelledby="about-title">
+            <div class="about__container">
+                <div class="about-card">
+                    <div class="about-avatar" title="空翻教练">
+                        <i class="fas fa-user-ninja"></i>
+                    </div>
+                    <h2 id="about-title" class="section-title about-title">关于作者</h2>
+                    <div class="about-content">
+                        <div class="about-info">
+                            <h3>个人简介</h3>
+                            <p>大三本科在读，热爱编程和开源，擅长全栈开发。</p>
+                            
+                            <h3>联系方式</h3>
+                            <div class="contact-info">
+                                <p><i class="fas fa-envelope"></i> 邮箱：<span id="author-email" style="user-select:all;">wangzi102410@163.com</span></p>
+                                <p><i class="fas fa-phone"></i> 手机：<span id="author-phone" style="user-select:all;">19862824533</span></p>
+                            </div>
+                            
+                            <h3>技术栈</h3>
+                            <ul>
+                                <li>前端开发：HTML, CSS, JavaScript, Vue</li>
+                                <li>后端开发：Java,SpringBoot,SpringCloud,Mybatis</li>
+                                <li>数据库：MySQL</li>
+                                <li>其他：Git, Docker, Linux</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="about-section">
-                <b>主要特性：</b>
-                <ul style="margin: 0 0 0 1.2em;">
-                    <li>AI智能生成网页代码，支持多种模型</li>
-                    <li>代码实时预览与格式化</li>
-                    <li>需求润色与AI辅助文档生成</li>
-                    <li>历史记录、代码片段管理、版本对比</li>
-                    <li>界面美观，操作便捷</li>
-                </ul>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h2 class="footer__title">关于我们</h2>
+                    <p class="footer__description">致力于提供最好的AI编程助手体验</p>
+                </div>
+                <div class="footer__section">
+                    <h2 class="footer__title">快速链接</h2>
+                    <ul class="footer__links">
+                        <li><a href="index.html#features">特性</a></li>
+                        <li><a href="index.html#examples">示例</a></li>
+                        <li><a href="index.html#best-practices">最佳实践</a></li>
+                        <li><a href="feedback.html">用户反馈</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="about-section">
-                <b>作者：</b> <span style="color:#2563eb;">DNA</span><br>
-                <b>联系方式：</b> <span style="color:#2563eb;">wangzi102410@163.com</span><br>
-                <!-- <b>开源地址：</b> <a href="#" style="color:#2563eb;"></a> -->
+            <div class="footer__bottom">
+                <p class="footer__copyright">&copy; 2024 Cursor提示词网站. 保留所有权利.</p>
             </div>
-            <div>代码全部开源，完全免费，尽情使用！</div>
-            <div class="about-author">感谢你的使用与支持！</div>
         </div>
-        <div class="about-container" style="flex:1 1 340px;min-width:260px;max-width:420px;max-height:520px;overflow-y:auto;box-sizing:border-box;">
-            <div class="about-title" style="font-size:1.3rem;">更新日志</div>
-            <ul style="margin: 0 0 0 1.2em; color:#444; font-size:0.98rem;">
-                <li><b>v1.2.0</b>（2024-06-09）：<br>
-                    - 新增"润色需求"功能，支持AI流式润色，结果在右侧浮窗展示，可一键应用。<br>
-                    - 优化需求输入区布局，提升用户体验。<br>
-                    - 新增"关于"页面，展示软件和作者信息。<br>
-                </li>
-                <li><b>v1.1.0</b>（2024-06-08）：<br>
-                    - 支持AI生成需求文档，弹窗展示，支持一键应用。<br>
-                    - 优化历史记录、代码片段管理等功能。<br>
-                </li>
-                <li><b>v1.0.0</b>（2024-06-01）：<br>
-                    - 首个公开版本，支持AI代码生成、预览、格式化、下载等基础功能。<br>
-                </li>
-            </ul>
-        </div>
-    </div>
+    </footer>
+
+    <script src="js/main.js" defer></script>
 </body>
 </html> 

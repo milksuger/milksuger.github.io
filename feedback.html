@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cursor提示词网站 - 用户反馈">
+    <title>用户反馈 - Cursor提示词网站</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/best-practices.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+    <script>
+      fetch('nav.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('nav-placeholder').innerHTML = data;
+        });
+    </script>
+
+    <main>
+        <section id="feedback" class="feedback" aria-labelledby="feedback-title">
+            <div class="feedback__container">
+                <div class="feedback-card">
+                    <h2 id="feedback-title" class="section-title feedback-title">用户反馈</h2>
+                    <div class="feedback-simple">
+                        <p style="text-align:center;font-size:1.1rem;margin-bottom:24px;">如需反馈建议或问题，请给作者发邮件：</p>
+                        <div style="display:flex;justify-content:center;align-items:center;gap:10px;flex-direction:column;">
+                            <span id="author-email" style="font-weight:600;font-size:1.1rem;user-select:all;color:#2563eb;background:#f4f6fa;padding:12px 28px;border-radius:8px;box-shadow:0 2px 8px rgba(37,99,235,0.06);border:1px solid #e5e7eb;min-width:260px;text-align:center;">wangzi102410@163.com</span>
+                            <button class="button button--primary feedback-btn" style="margin-top:12px;width:140px;" onclick="copyEmail()">
+                                <i class="fas fa-copy" style="margin-right:6px;"></i>复制邮箱
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h2 class="footer__title">关于我们</h2>
+                    <p class="footer__description">致力于提供最好的AI编程助手体验</p>
+                </div>
+                <div class="footer__section">
+                    <h2 class="footer__title">快速链接</h2>
+                    <ul class="footer__links">
+                        <li><a href="index.html#features">特性</a></li>
+                        <li><a href="index.html#examples">示例</a></li>
+                        <li><a href="index.html#best-practices">最佳实践</a></li>
+                        <li><a href="feedback.html">用户反馈</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p class="footer__copyright">&copy; 2024 Cursor提示词网站. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js" defer></script>
+    <script>
+    function copyEmail() {
+        const email = 'wangzi102410@163.com';
+        navigator.clipboard.writeText(email).then(function() {
+            showCopyMsg();
+        });
+    }
+    function showCopyMsg() {
+        let msg = document.createElement('div');
+        msg.textContent = '已复制作者邮箱，您可以给作者发邮件了';
+        msg.style.position = 'fixed';
+        msg.style.top = '100px';
+        msg.style.left = '50%';
+        msg.style.transform = 'translateX(-50%)';
+        msg.style.background = '#2563eb';
+        msg.style.color = '#fff';
+        msg.style.padding = '12px 28px';
+        msg.style.borderRadius = '8px';
+        msg.style.fontSize = '1rem';
+        msg.style.zIndex = 9999;
+        msg.style.boxShadow = '0 2px 8px rgba(37,99,235,0.12)';
+        document.body.appendChild(msg);
+        setTimeout(()=>{msg.remove();}, 1800);
+    }
+    </script>
+</body>
+</html> 
