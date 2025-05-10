@@ -27,37 +27,43 @@
             max-width: 420px;
             width: 100%;
             position: relative;
+            transition: box-shadow 0.3s;
+        }
+        .about-card:hover {
+            box-shadow: 0 8px 32px rgba(37,99,235,0.18);
         }
         .about-avatar {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             background: linear-gradient(135deg,#2563eb 60%,#60a5fa 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
-            font-size: 2.8rem;
+            font-size: 3.2rem;
             position: absolute;
-            top: -40px;
+            top: -45px;
             left: 50%;
             transform: translateX(-50%);
-            box-shadow: 0 2px 8px rgba(37,99,235,0.18);
+            box-shadow: 0 2px 12px rgba(37,99,235,0.18);
+            border: 4px solid #fff;
         }
         .about-title {
             text-align: center;
-            margin-top: 48px;
-            margin-bottom: 18px;
-            font-size: 2rem;
-            font-weight: 700;
+            margin-top: 56px;
+            margin-bottom: 22px;
+            font-size: 2.1rem;
+            font-weight: 800;
             color: #2563eb;
+            letter-spacing: 1px;
         }
         .about-info h3 {
-            margin-top: 22px;
-            margin-bottom: 8px;
+            margin-top: 26px;
+            margin-bottom: 10px;
             font-size: 1.15rem;
             color: #1e293b;
-            font-weight: 600;
+            font-weight: 700;
             border-left: 4px solid #2563eb;
             padding-left: 8px;
         }
@@ -66,20 +72,48 @@
             color: #222;
             font-size: 1rem;
         }
+        .contact-info {
+            margin-bottom: 8px;
+        }
         .contact-info p {
             display: flex;
             align-items: center;
             gap: 8px;
             margin-bottom: 4px;
+            background: #f1f5fb;
+            border-radius: 6px;
+            padding: 6px 10px;
+            position: relative;
         }
         .contact-info i {
             color: #2563eb;
             font-size: 1.1em;
         }
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #2563eb;
+            cursor: pointer;
+            margin-left: 6px;
+            font-size: 1em;
+            transition: color 0.2s;
+        }
+        .copy-btn:hover {
+            color: #1d4ed8;
+        }
+        .copy-success {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #22c55e;
+            font-size: 0.95em;
+        }
         .about-info ul {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px 12px;
+            flex-direction: column;
+            gap: 8px 0;
             list-style: none;
             padding: 0;
         }
@@ -87,9 +121,14 @@
             background: #eff6ff;
             color: #2563eb;
             border-radius: 6px;
-            padding: 4px 12px;
+            padding: 6px 12px;
             font-size: 0.98rem;
             margin: 0;
+            box-shadow: 0 1px 4px rgba(37,99,235,0.04);
+        }
+        .about-info ul li span {
+            color: #222;
+            font-weight: 500;
         }
         @media (max-width: 600px) {
             .about-card {
@@ -140,7 +179,7 @@
                             <h3>技术栈</h3>
                             <ul>
                                 <li>前端开发：HTML, CSS, JavaScript, Vue</li>
-                                <li>后端开发：Java,SpringBoot,SpringCloud,Mybatis</li>
+                                <li>后端开发：Java,SpringBoot,Mybatis</li>
                                 <li>数据库：MySQL</li>
                                 <li>其他：Git, Docker, Linux</li>
                             </ul>

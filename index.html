@@ -4,50 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Cursor提示词网站 - 探索AI编程助手的最佳实践">
+    <meta name="theme-color" content="#2563eb">
     <title>Cursor提示词网站</title>
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/best-practices.css">
+    
     <!-- 预加载关键资源 -->
     <link rel="preload" href="styles/main.css" as="style">
     <link rel="preload" href="js/main.js" as="script">
-    <!-- 添加代码高亮 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <!-- 添加字体图标 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preload" href="nav.html" as="fetch" crossorigin>
+    
+    <!-- 样式表 -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/best-practices.css">
+    
+    <!-- 代码高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="print" onload="this.media='all'">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
+    
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
 </head>
 <body>
+    <!-- 导航占位符 -->
     <div id="nav-placeholder"></div>
-    <script>
-      fetch('nav.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('nav-placeholder').innerHTML = data;
-        });
-    </script>
-
+    
+    <!-- 主要内容 -->
     <main>
+        <!-- 英雄区域 -->
         <section class="hero" aria-labelledby="hero-title">
             <div class="hero__container">
-                <h2 id="hero-title" class="hero__title">探索AI编程的未来</h2>
+                <h1 id="hero-title" class="hero__title">探索AI编程的未来</h1>
                 <p class="hero__description">通过Cursor提示词，释放您的编程潜能</p>
                 <a href="#features" class="button button--primary">了解更多</a>
             </div>
         </section>
 
+        <!-- 特性部分 -->
         <section id="features" class="features" aria-labelledby="features-title">
             <div class="features__container">
                 <h2 id="features-title" class="section-title">主要特性</h2>
                 <div class="features__grid">
                     <article class="feature-card">
+                        <div class="feature-card__icon">
+                            <i class="fas fa-code"></i>
+                        </div>
                         <h3 class="feature-card__title">智能代码补全</h3>
                         <p class="feature-card__description">基于上下文的智能代码建议，提高编码效率</p>
                     </article>
                     <article class="feature-card">
+                        <div class="feature-card__icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
                         <h3 class="feature-card__title">自然语言交互</h3>
                         <p class="feature-card__description">使用自然语言描述需求，AI助手帮您实现</p>
                     </article>
                     <article class="feature-card">
+                        <div class="feature-card__icon">
+                            <i class="fas fa-sync"></i>
+                        </div>
                         <h3 class="feature-card__title">代码重构</h3>
                         <p class="feature-card__description">智能代码重构建议，提升代码质量</p>
                     </article>
@@ -55,25 +68,10 @@
             </div>
         </section>
 
-        <section id="examples" class="examples" aria-labelledby="examples-title">
-            <div class="examples__container">
-                <h2 id="examples-title" class="section-title">使用示例</h2>
-                <div class="examples__grid">
-                    <article class="example-card">
-                        <pre class="example-card__code"><code>// 示例代码
-function greet(name) {
-    return `Hello, ${name}!`;
-}</code></pre>
-                        <p class="example-card__description">简单的函数定义示例</p>
-                    </article>
-                    <!-- 更多示例卡片 -->
-                </div>
-            </div>
-        </section>
-
-        <section id="best-practices" class="practices-content">
+        <!-- 最佳实践部分 -->
+        <section id="best-practices" class="practices-content" aria-labelledby="practices-title">
             <div class="practices-content__container">
-                <h2 class="practices-content__title">最佳实践</h2>
+                <h2 id="practices-title" class="practices-content__title">最佳实践</h2>
                 <div class="practices-grid">
                     <div class="practices-grid__column">
                         <!-- 提示词编写 -->
@@ -319,6 +317,7 @@ function greet(name) {
         </section>
     </main>
 
+    <!-- 页脚 -->
     <footer class="footer">
         <div class="footer__container">
             <div class="footer__content">
@@ -328,12 +327,14 @@ function greet(name) {
                 </div>
                 <div class="footer__section">
                     <h2 class="footer__title">快速链接</h2>
-                    <ul class="footer__links">
-                        <li><a href="#features">特性</a></li>
-                        <li><a href="#examples">示例</a></li>
-                        <li><a href="#best-practices">最佳实践</a></li>
-                        <li><a href="feedback.html">用户反馈</a></li>
-                    </ul>
+                    <nav>
+                        <ul class="footer__links">
+                            <li><a href="#features">特性</a></li>
+                            <li><a href="#examples">示例</a></li>
+                            <li><a href="#best-practices">最佳实践</a></li>
+                            <li><a href="feedback.html">用户反馈</a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
             <div class="footer__bottom">
@@ -342,7 +343,24 @@ function greet(name) {
         </div>
     </footer>
 
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="back-to-top" aria-label="返回顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- 脚本 -->
+    <script>
+        // 导航加载
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('nav.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('nav-placeholder').innerHTML = data;
+                })
+                .catch(error => console.error('导航加载失败:', error));
+        });
+    </script>
     <script src="js/main.js" defer></script>
-    <script src="js/best-practices.js"></script>
+    <script src="js/best-practices.js" defer></script>
 </body>
 </html> 
