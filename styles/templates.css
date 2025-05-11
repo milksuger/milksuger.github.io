@@ -1,0 +1,268 @@
+/* 模板库头部样式 */
+.templates-header {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    padding: 4rem 1rem;
+    text-align: center;
+}
+
+.templates-header__container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.templates-header__title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.templates-header__description {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+}
+
+/* 搜索和筛选样式 */
+.templates-header__filters {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.search-box {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 1rem 3rem 1rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    backdrop-filter: blur(10px);
+}
+
+.search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-box i {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-box input:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filter-button {
+    padding: 0.5rem 1.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.filter-button.active {
+    background: white;
+    color: #2563eb;
+    border-color: white;
+}
+
+/* 模板网格样式 */
+.templates-grid {
+    padding: 4rem 1rem;
+}
+
+.templates-grid__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+/* 模板卡片样式 */
+.template-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.template-card:hover {
+    transform: translateY(-5px);
+}
+
+.template-card__header {
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.template-card__category {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: #e2e8f0;
+    border-radius: 15px;
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+}
+
+.template-card__title {
+    font-size: 1.25rem;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.template-card__description {
+    color: #64748b;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.template-card__content {
+    padding: 1.5rem;
+}
+
+.template-card__preview {
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.875rem;
+    color: #334155;
+    margin-bottom: 1rem;
+    max-height: 150px;
+    overflow: hidden;
+}
+
+.template-card__footer {
+    padding: 1rem 1.5rem;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.template-card__stats {
+    display: flex;
+    gap: 1rem;
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+.template-card__stat {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* 模态框样式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal__content {
+    background: white;
+    border-radius: 12px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1;
+}
+
+.modal__body {
+    padding: 2rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .templates-header__title {
+        font-size: 2rem;
+    }
+    
+    .templates-header__description {
+        font-size: 1rem;
+    }
+    
+    .filter-buttons {
+        gap: 0.5rem;
+    }
+    
+    .filter-button {
+        padding: 0.4rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    .templates-grid__container {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal {
+        padding: 1rem;
+    }
+}
+
+.button--success {
+    background: #22c55e;
+    color: #fff;
+    border: none;
+    transition: background 0.2s;
+}
+.button--success:hover {
+    background: #16a34a;
+} 

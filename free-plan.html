@@ -123,16 +123,36 @@
                         重置机器码
                     </h3>
                     <div class="plan-card__content">
-                        <p>重置机器码，Win + X,使用终端管理员执行如下代码即可</p>
-                        <div class="code-block">
-                            <div class="code-block__text">irm https://aizaozao.com/accelerate.php/https://raw.githubusercontent.com/yuaotian/go-cursor-help/refs/heads/master/scripts/run/cursor_win_id_modifier.ps1 | iex</div>
+                        <p style="font-weight:bold; color:#2c3e50; margin-bottom:10px;">遇到以下错误提示，说明机器被锁定：</p>
+                        <div class="code-block" style="margin-bottom:18px;">
+                            <div class="code-block__text" style="font-size:15px;">Too many free trial accounts used on this machine. Please upgrade to pro. We have this limit in place to prevent abuse. Please let us know if you believe this is a mistake.</div>
                             <button class="copy-button" onclick="copyCode(this)">
                                 <i class="fas fa-copy"></i>复制
                             </button>
                             <div class="success-message">复制成功！</div>
                         </div>
+                        <div style="margin-bottom:10px; color:#34495e;">请按以下步骤操作以重置机器码：</div>
+                        <ol style="margin-left:1.2em;">
+                            <li><span style="font-weight:bold; color:#2563eb;">按下 <kbd>Win</kbd> + <kbd>X</kbd></span> 打开快捷菜单</li>
+                            <li><span style="font-weight:bold; color:#2563eb;">选择"Windows终端（管理员）"或"命令提示符（管理员）"</span></li>
+                            <li><span style="font-weight:bold; color:#2563eb;">复制并执行以下代码：</span></li>
+                        </ol>
+                        <div class="code-block" style="margin-bottom:10px;">
+                            <div class="code-block__text" style="font-size:15px;">irm https://aizaozao.com/accelerate.php/https://raw.githubusercontent.com/yuaotian/go-cursor-help/refs/heads/master/scripts/run/cursor_win_id_modifier.ps1 | iex</div>
+                            <button class="copy-button" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>复制
+                            </button>
+                            <div class="success-message">复制成功！</div>
+                        </div>
+                        <div style="background:#fffbe6; color:#b26a00; border-left:4px solid #ffd700; padding:8px 14px; border-radius:6px; margin-top:10px; font-size:15px;">
+                            <i class="fas fa-exclamation-triangle"></i> <b>注意：</b> 执行过程中Cursor会被自动关闭，修改完机器码之后重启即可
+                            <br>
+                            <i class="fas fa-exclamation-triangle"></i> <b>注意：</b> 如果本方法不可用或者你遇到了什么问题，请在<a href="feedback.html">用户反馈</a>页面反馈给站长，我会倾力相助！
+                        </div>
                     </div>
                 </div>
+
+                <hr style="border:none; border-top:1px dashed #d0d7de; margin:36px 0 24px 0;">
 
                 <div class="plan-card">
                     <h3 class="plan-card__title">
@@ -140,9 +160,20 @@
                         免费续杯
                     </h3>
                     <div class="plan-card__content">
-                        <p>使用电子邮件转发功能来获取更多使用次数</p>
+                        <p style="font-weight:bold; color:#2c3e50; margin-bottom:10px;">使用电子邮件转发功能来获取更多使用次数：</p>
+                        <ol style="margin-left:1.2em;">
+                            <li><span style="font-weight:bold; color:#2563eb;">注册一个新的邮箱账号</span>（推荐使用临时邮箱服务）</li>
+                            <li><span style="font-weight:bold; color:#2563eb;">在Cursor中注册时使用该邮箱</span></li>
+                            <li><span style="font-weight:bold; color:#2563eb;">获取免费使用次数后，可以继续使用新邮箱注册</span></li>
+                        </ol>
+                        <div style="background:#eafaf1; color:#168a4a; border-left:4px solid #27ae60; padding:8px 14px; border-radius:6px; margin-top:10px; font-size:15px;">
+                            <i class="fas fa-info-circle"></i> <b>提示：</b> 可多次更换邮箱注册，持续获得免费额度。
+                        </div>
                     </div>
                 </div>
+
+
+              
             </div>
         </section>
     </main>
@@ -152,20 +183,38 @@
             <div class="footer__content">
                 <div class="footer__section">
                     <h2 class="footer__title">关于我们</h2>
-                    <p class="footer__description">致力于提供最好的AI编程助手体验</p>
+                    <p class="footer__description">Cursor提示词网站致力于为开发者提供最优质的AI编程助手体验，帮助您更高效地完成编程任务。</p>
+                    <div class="footer__social">
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                        <a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
                 </div>
                 <div class="footer__section">
                     <h2 class="footer__title">快速链接</h2>
+                    <nav>
+                        <ul class="footer__links">
+                            <li><a href="index.html#features"><i class="fas fa-star"></i>特性</a></li>
+                            <li><a href="index.html#examples"><i class="fas fa-code"></i>示例</a></li>
+                            <li><a href="index.html#best-practices"><i class="fas fa-book"></i>最佳实践</a></li>
+                            <li><a href="docs.html"><i class="fas fa-file-alt"></i>学习文档</a></li>
+                            <li><a href="feedback.html"><i class="fas fa-comment"></i>用户反馈</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="footer__section">
+                    <h2 class="footer__title">资源中心</h2>
                     <ul class="footer__links">
-                        <li><a href="index.html#features">特性</a></li>
-                        <li><a href="index.html#examples">示例</a></li>
-                        <li><a href="index.html#best-practices">最佳实践</a></li>
-                        <li><a href="feedback.html">用户反馈</a></li>
+                        <li><a href="templates.html"><i class="fas fa-copy"></i>模板库</a></li>
+                        <li><a href="free-plan.html"><i class="fas fa-gift"></i>免费方案</a></li>
+                        <li><a href="resources.html"><i class="fas fa-tools"></i>开发工具</a></li>
+                        <li><a href="about.html"><i class="fas fa-user"></i>关于作者</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer__bottom">
-                <p class="footer__copyright">&copy; 2024 Cursor提示词网站. 保留所有权利.</p>
+                <p class="footer__copyright">&copy; 2024 Cursor提示词网站. 保留所有权利. <a href="privacy.html">隐私政策</a> | <a href="terms.html">使用条款</a></p>
             </div>
         </div>
     </footer>

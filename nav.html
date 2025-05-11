@@ -8,9 +8,17 @@
                 <span class="nav__toggle-icon"></span>
             </button>
             <ul class="nav__menu">
+                <li><a href="templates.html" class="nav__link">模板库</a></li>
                 <li><a href="free-plan.html" class="nav__link">免费方案</a></li>
-                <li><a href="feedback.html" class="nav__link">用户反馈</a></li>
-                <li><a href="about.html" class="nav__link">关于作者</a></li>
+                <li class="nav__dropdown">
+                    <a href="#" class="nav__link">更多 <span class="arrow">&#9662;</span></a>
+                    <ul class="dropdown__menu">
+                        <li><a href="docs.html" class="nav__link">学习文档</a></li>
+                        <li><a href="resources.html" class="nav__link">资源中心</a></li>
+                        <li><a href="feedback.html" class="nav__link">用户反馈</a></li>
+                        <li><a href="about.html" class="nav__link">关于作者</a></li>
+                    </ul>
+                </li>
             </ul>
             <div class="nav__search">
                 <input type="text" class="search-input" placeholder="搜索..." aria-label="搜索">

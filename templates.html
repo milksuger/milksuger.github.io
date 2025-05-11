@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cursor提示词模板库 - 精选AI编程助手提示词模板">
+    <meta name="theme-color" content="#2563eb">
+    <title>提示词模板库 - Cursor提示词网站</title>
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="styles/main.css" as="style">
+    <link rel="preload" href="js/main.js" as="script">
+    <link rel="preload" href="nav.html" as="fetch" crossorigin>
+    
+    <!-- 样式表 -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/templates.css">
+    
+    <!-- 代码高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="print" onload="this.media='all'">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
+    
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+</head>
+<body>
+    <!-- 导航占位符 -->
+    <div id="nav-placeholder"></div>
+    
+    <!-- 主要内容 -->
+    <main>
+        <!-- 模板库头部 -->
+        <section class="templates-header" aria-labelledby="templates-title">
+            <div class="templates-header__container">
+                <h1 id="templates-title" class="templates-header__title">提示词模板库</h1>
+                <p class="templates-header__description">精选实用的AI编程助手提示词模板，助您提升开发效率</p>
+                
+                <!-- 搜索和筛选 -->
+                <div class="templates-header__filters">
+                    <div class="search-box">
+                        <input type="text" id="template-search" placeholder="搜索模板..." aria-label="搜索模板">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="filter-button active" data-category="all">全部</button>
+                        <button class="filter-button" data-category="code">代码生成</button>
+                        <button class="filter-button" data-category="debug">调试优化</button>
+                        <button class="filter-button" data-category="review">代码审查</button>
+                        <button class="filter-button" data-category="document">文档生成</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 模板列表 -->
+        <section class="templates-grid" aria-label="提示词模板列表">
+            <div class="templates-grid__container">
+                <!-- 模板卡片将通过JavaScript动态加载 -->
+            </div>
+        </section>
+    </main>
+
+    <!-- 模板详情模态框 -->
+    <div id="template-modal" class="modal" aria-hidden="true">
+        <div class="modal__content">
+            <button class="modal__close" aria-label="关闭">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal__body">
+                <!-- 模板详情内容将通过JavaScript动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 脚本 -->
+    <script src="js/main.js"></script>
+    <script src="js/templates.js"></script>
+</body>
+</html> 

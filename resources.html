@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cursor提示词资源中心 - 精选编程学习资源">
+    <meta name="theme-color" content="#2563eb">
+    <title>资源中心 - Cursor提示词</title>
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="styles/main.css" as="style">
+    <link rel="preload" href="js/main.js" as="script">
+    <link rel="preload" href="nav.html" as="fetch" crossorigin>
+    
+    <!-- 样式表 -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/resources.css">
+    
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- 动画库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+    <!-- 导航占位符 -->
+    <div id="nav-placeholder"></div>
+    
+    <!-- 主要内容 -->
+    <main>
+        <!-- 英雄区域 -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero__container">
+                <h1 id="hero-title" class="hero__title animate__animated animate__fadeIn">精选编程资源</h1>
+                <p class="hero__description animate__animated animate__fadeIn animate__delay-1s">发现优质学习资源，提升编程技能</p>
+            </div>
+        </section>
+
+        <!-- 资源分类导航 -->
+        <section class="resource-nav">
+            <div class="resource-nav__container">
+                <button class="resource-nav__btn active" data-category="all">
+                    <i class="fas fa-th-large"></i> 全部
+                </button>
+                <button class="resource-nav__btn" data-category="docs">
+                    <i class="fas fa-book"></i> 官方文档
+                </button>
+                <button class="resource-nav__btn" data-category="tutorials">
+                    <i class="fas fa-graduation-cap"></i> 教程
+                </button>
+                <button class="resource-nav__btn" data-category="videos">
+                    <i class="fas fa-video"></i> 视频
+                </button>
+                <button class="resource-nav__btn" data-category="tools">
+                    <i class="fas fa-tools"></i> 工具
+                </button>
+            </div>
+        </section>
+
+        <!-- 资源展示区 -->
+        <section class="resources">
+            <div class="resources__container">
+                <!-- 官方文档 -->
+                <article class="resource-card" data-category="docs">
+                    <div class="resource-card__header">
+                        <i class="fab fa-react resource-card__icon"></i>
+                        <h3>React 官方文档</h3>
+                    </div>
+                    <p class="resource-card__description">React 官方文档提供了完整的组件开发指南和最佳实践。</p>
+                    <div class="resource-card__meta">
+                        <span><i class="fas fa-star"></i> 推荐指数：5.0</span>
+                        <span><i class="fas fa-clock"></i> 更新时间：2025-05-11</span>
+                    </div>
+                    <a href="https://react.dev" target="_blank" class="resource-card__link">
+                        访问资源 <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </article>
+
+                <article class="resource-card" data-category="docs">
+                    <div class="resource-card__header">
+                        <i class="fab fa-python resource-card__icon"></i>
+                        <h3>Python 官方文档</h3>
+                    </div>
+                    <p class="resource-card__description">Python 官方文档包含语言特性、标准库和最佳实践指南。</p>
+                    <div class="resource-card__meta">
+                        <span><i class="fas fa-star"></i> 推荐指数：5.0</span>
+                        <span><i class="fas fa-clock"></i> 更新时间：2025-05-11</span>
+                    </div>
+                    <a href="https://docs.python.org/zh-cn/3/" target="_blank" class="resource-card__link">
+                        访问资源 <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </article>
+
+                <!-- 教程 -->
+                <article class="resource-card" data-category="tutorials">
+                    <div class="resource-card__header">
+                        <i class="fas fa-code resource-card__icon"></i>
+                        <h3>MDN Web 开发教程</h3>
+                    </div>
+                    <p class="resource-card__description">Mozilla 开发者网络提供的完整 Web 开发教程，从入门到精通。</p>
+                    <div class="resource-card__meta">
+                        <span><i class="fas fa-star"></i> 推荐指数：4.9</span>
+                        <span><i class="fas fa-clock"></i> 更新时间：2025-05-11</span>
+                    </div>
+                    <a href="https://developer.mozilla.org/zh-CN/docs/Web" target="_blank" class="resource-card__link">
+                        访问资源 <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </article>
+
+                <!-- 视频 -->
+                <article class="resource-card" data-category="videos">
+                    <div class="resource-card__header">
+                        <i class="fas fa-play-circle resource-card__icon"></i>
+                        <h3>Bilibili 优质编程教程</h3>
+                    </div>
+                    <p class="resource-card__description">精选 Bilibili 平台上的优质编程教程视频，涵盖多个技术领域。</p>
+                    <div class="resource-card__meta">
+                        <span><i class="fas fa-star"></i> 推荐指数：4.8</span>
+                        <span><i class="fas fa-clock"></i> 更新时间：2025-05-11</span>
+                    </div>
+                    <a href="https://www.bilibili.com/v/popular/rank/tech" target="_blank" class="resource-card__link">
+                        访问资源 <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </article>
+
+                <!-- 工具 -->
+                <article class="resource-card" data-category="tools">
+                    <div class="resource-card__header">
+                        <i class="fas fa-terminal resource-card__icon"></i>
+                        <h3>GitHub Copilot</h3>
+                    </div>
+                    <p class="resource-card__description">AI 驱动的代码助手，提供智能代码补全和建议。</p>
+                    <div class="resource-card__meta">
+                        <span><i class="fas fa-star"></i> 推荐指数：4.7</span>
+                        <span><i class="fas fa-clock"></i> 更新时间：2025-05-11</span>
+                    </div>
+                    <a href="https://github.com/features/copilot" target="_blank" class="resource-card__link">
+                        访问资源 <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </article>
+
+                <article class="resource-card" data-category="tools">
+                    <div class="resource-card__header">
+                        <i class="fas fa-code-branch resource-card__icon"></i>
+                        <h3>VS Code</h3>
+                    </div>
+                    <p class="resource-card__description">强大的代码编辑器，支持丰富的插件生态系统。</p>
+                    <div class="resource-card__meta">
+                        <span><i class="fas fa-star"></i> 推荐指数：4.9</span>
+                        <span><i class="fas fa-clock"></i> 更新时间：2025-05-11</span>
+                    </div>
+                    <a href="https://code.visualstudio.com" target="_blank" class="resource-card__link">
+                        访问资源 <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- 脚本 -->
+    <script src="js/main.js"></script>
+    <script src="js/resources.js"></script>
+</body>
+</html> 
