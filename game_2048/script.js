@@ -83,7 +83,11 @@ class Game2048 {
         });
 
         // 阻止默认的下拉刷新行为
-        document.body.addEventListener('touchmove', (e) => {
+        document.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+
+        document.addEventListener('touchstart', (e) => {
             if (e.target.closest('.game-container')) {
                 e.preventDefault();
             }
@@ -96,7 +100,7 @@ class Game2048 {
         gameContainer.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
-        });
+        }, { passive: true });
 
         gameContainer.addEventListener('touchend', (e) => {
             if (!touchStartX || !touchStartY) return;
@@ -107,14 +111,18 @@ class Game2048 {
             const dx = touchEndX - touchStartX;
             const dy = touchEndY - touchStartY;
 
-            if (Math.abs(dx) > Math.abs(dy)) {
-                if (dx > 0) this.move('right');
-                else this.move('left');
-            } else {
-                if (dy > 0) this.move('down');
-                else this.move('up');
+            // 只有当滑动距离超过一定阈值时才触发移动
+            const minSwipeDistance = 30;
+            if (Math.abs(dx) > minSwipeDistance || Math.abs(dy) > minSwipeDistance) {
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    if (dx > 0) this.move('right');
+                    else this.move('left');
+                } else {
+                    if (dy > 0) this.move('down');
+                    else this.move('up');
+                }
             }
-        });
+        }, { passive: true });
 
         // 主题切换按钮点击显示/隐藏菜单
         this.themeButton.addEventListener('click', (e) => {
