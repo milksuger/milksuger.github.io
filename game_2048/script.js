@@ -82,6 +82,13 @@ class Game2048 {
             }
         });
 
+        // 阻止默认的下拉刷新行为
+        document.body.addEventListener('touchmove', (e) => {
+            if (e.target.closest('.game-container')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
         // 触摸事件处理
         let touchStartX, touchStartY;
         const gameContainer = document.querySelector('.game-container');
