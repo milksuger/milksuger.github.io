@@ -1003,64 +1003,45 @@ main {
 
 /* 导航栏响应式调整 */
 @media (max-width: 768px) {
+    /* 首页隐藏搜索栏 */
+    body.index .nav__search {
+        display: none !important;
+    }
+    /* 导航栏美观优化 */
     .nav__container {
-        padding: 0 1rem;
-    }
-
-    .nav__menu {
-        display: none;
-        position: fixed;
-        top: 60px;
-        left: 0;
-        right: 0;
-        background: var(--color-background);
-        padding: 1rem;
-        flex-direction: column;
-        gap: 0;
-        box-shadow: var(--shadow-md);
-        height: calc(100vh - 60px);
-        overflow-y: auto;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-    }
-
-    .nav__menu.active {
         display: flex;
-        transform: translateX(0);
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1rem;
+        height: 56px;
+        width: 100vw;
+        min-width: 0;
+        box-sizing: border-box;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
-
-    .nav__toggle {
-        display: block;
+    .nav__logo {
+        flex: 1 1 0;
+        min-width: 0;
+        max-width: 70vw;
+        margin-right: 0.5rem;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
     }
-
     .nav__logo h1 {
-        font-size: 1.5rem;
+        font-size: 1.15rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        font-weight: 700;
+        color: #14213d;
+        letter-spacing: 1px;
     }
-
-    .nav__link {
-        padding: 1rem;
-        border-bottom: 1px solid var(--color-border);
-    }
-
-    .nav__link:last-child {
-        border-bottom: none;
-    }
-
-    .dropdown__menu {
-        position: static;
-        box-shadow: none;
-        background: var(--color-background-alt);
-        margin: 0.5rem 0;
-        padding: 0.5rem 0;
-        display: none;
-    }
-
-    .nav__dropdown.active .dropdown__menu {
-        display: block;
-    }
-
-    .dropdown__menu a {
-        padding: 0.75rem 2rem;
+    .nav__toggle {
+        display: none !important;
     }
 }
 
