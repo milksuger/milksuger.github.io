@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048游戏</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>2048</h1>
+            <div class="header-right">
+                <div class="theme-switch">
+                    <button id="theme-button" title="切换主题">
+                        <span class="theme-icon">🎨</span>
+                    </button>
+                    <div class="theme-dropdown">
+                        <div class="theme-option" data-theme="default">默认主题</div>
+                        <div class="theme-option" data-theme="dark">暗黑主题</div>
+                        <div class="theme-option" data-theme="nature">自然主题</div>
+                        <div class="theme-option" data-theme="ocean">海洋主题</div>
+                        <div class="theme-option" data-theme="sunset">日落主题</div>
+                    </div>
+                </div>
+                <div class="scores-container">
+                    <div class="score-box">
+                        <span class="score-label">分数</span>
+                        <span id="score">0</span>
+                    </div>
+                    <div class="score-box">
+                        <span class="score-label">最高分</span>
+                        <span id="best-score">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-panel">
+            <h2>游戏统计</h2>
+        </div>
+
+        <div class="game-intro">
+            <p>使用 <strong>方向键</strong> 或 <strong>滑动</strong> 来移动方块。相同数字的方块相撞时会合并！<br>PC端按 <strong>空格键</strong> 可以随时重新开始游戏。</p>
+            <div class="button-container">
+                <button id="new-game-button">新游戏</button>
+                <button id="stats-button">游戏统计</button>
+            </div>  
+        </div>
+
+        <div class="game-container">
+            <div class="grid-container">
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+            </div>
+            <div class="tile-container" id="tile-container"></div>
+        </div>
+
+        <div class="game-message" id="game-message">
+            <p></p>
+            <div class="lower">
+                <button id="retry-button">再试一次</button>
+            </div>
+        </div>
+
+        <div class="stats-modal" id="stats-modal">
+            <div class="stats-content">
+                <div class="stats-header">
+                    <h2>游戏统计</h2>
+                    <button class="close-button" id="close-stats">&times;</button>
+                </div>
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <span class="stat-label">游戏次数</span>
+                        <span id="games-played">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">平均分数</span>
+                        <span id="average-score">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">最高方块</span>
+                        <span id="highest-tile">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">胜利次数</span>
+                        <span id="wins">0</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="score-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
