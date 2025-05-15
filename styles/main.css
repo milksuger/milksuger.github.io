@@ -1201,4 +1201,47 @@ main {
         text-decoration: none;
         color: #000;
     }
+}
+
+.game-quick-entry {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.2rem 0 0.5rem 0;
+    flex-wrap: wrap;
+}
+.game-entry-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 0.6em 1.2em;
+    border-radius: var(--border-radius-md);
+    text-decoration: none;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+.game-entry-btn i {
+    font-size: 1.2em;
+}
+.game-entry-btn:hover, .game-entry-btn:active {
+    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: var(--shadow-lg);
+}
+@media (max-width: 600px) {
+    .game-quick-entry {
+        flex-direction: column;
+        gap: 0.7rem;
+    }
+    .game-entry-btn {
+        width: 90vw;
+        justify-content: center;
+        font-size: 1rem;
+        padding: 0.7em 0;
+    }
 } 

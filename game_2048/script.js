@@ -40,6 +40,9 @@ class Game2048 {
         this.themeOptions = document.querySelectorAll('.theme-option');
         this.themeSwitch = document.querySelector('.theme-switch');
         
+        // 初始化排行榜
+        this.leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+        
         this.init();
         this.applyTheme(this.currentTheme);
     }
@@ -449,6 +452,7 @@ class Game2048 {
                     this.stats.wins++;
                     this.saveStats();
                     this.showMessage('你赢了！', true);
+                    this.updateLeaderboard(this.score);
                     return;
                 }
             }
@@ -484,6 +488,7 @@ class Game2048 {
         }
         this.saveStats();
         this.showMessage('游戏结束！', false);
+        this.updateLeaderboard(this.score);
     }
 
     showMessage(message, won) {
@@ -503,6 +508,24 @@ class Game2048 {
             } else {
                 option.classList.remove('active');
             }
+        });
+    }
+
+    updateLeaderboard(score) {
+        this.leaderboard.push(score);
+        this.leaderboard.sort((a, b) => b - a);
+        this.leaderboard = this.leaderboard.slice(0, 5); // 只保留前5名
+        localStorage.setItem('leaderboard', JSON.stringify(this.leaderboard));
+        this.displayLeaderboard();
+    }
+
+    displayLeaderboard() {
+        const leaderboardList = document.getElementById('leaderboard-list');
+        leaderboardList.innerHTML = '';
+        this.leaderboard.forEach((score, index) => {
+            const li = document.createElement('li');
+            li.textContent = `${index + 1}. ${score}`;
+            leaderboardList.appendChild(li);
         });
     }
 }
