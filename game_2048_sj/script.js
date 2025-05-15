@@ -773,7 +773,9 @@ class Game2048 {
                     
                     const date = document.createElement('span');
                     date.className = 'date';
-                    date.textContent = new Date(entry.date).toLocaleDateString();
+                    // 精细到时分秒
+                    const d = new Date(entry.date);
+                    date.textContent = `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}:${d.getSeconds().toString().padStart(2, '0')}`;
                     
                     entryElement.appendChild(rank);
                     entryElement.appendChild(score);
