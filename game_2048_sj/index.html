@@ -61,6 +61,7 @@
                 <button id="new-game-button">新游戏</button>
                 <button id="stats-button">游戏统计</button>
                 <button id="ai-button">AI演示</button>
+                <span id="ai-info" class="ai-info"></span>
                 <div class="ai-settings">
                     <label for="ai-speed">AI速度(ms):</label>
                     <input type="range" id="ai-speed" min="1" max="2000" step="1" value="500">
@@ -142,6 +143,69 @@
                 </div>
                 <div class="chart-container">
                     <canvas id="score-chart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="premium-modal" id="premium-modal">
+            <div class="premium-content">
+                <div class="premium-header">
+                    <h2>AI演示会员套餐</h2>
+                    <button class="close-button" id="close-premium">&times;</button>
+                </div>
+                <div class="premium-container">
+                    <div class="premium-box">
+                        <div class="premium-title">基础套餐</div>
+                        <div class="premium-price">¥9.8万</div>
+                        <div class="premium-features">
+                            <ul>
+                                <li>无限次AI演示</li>
+                                <li>优先客服支持</li>
+                                <li>专属游戏主题</li>
+                            </ul>
+                        </div>
+                        <button class="premium-button" data-plan="basic">立即开通</button>
+                    </div>
+                    <div class="premium-box featured">
+                        <div class="premium-badge">最受欢迎</div>
+                        <div class="premium-title">高级套餐</div>
+                        <div class="premium-price">¥19.8万</div>
+                        <div class="premium-features">
+                            <ul>
+                                <li>无限次AI演示</li>
+                                <li>优先客服支持</li>
+                                <li>专属游戏主题</li>
+                                <li>AI速度无限制</li>
+                                <li>专属游戏音效</li>
+                            </ul>
+                        </div>
+                        <button class="premium-button" data-plan="premium">立即开通</button>
+                    </div>
+                    <div class="premium-box">
+                        <div class="premium-title">终身会员</div>
+                        <div class="premium-price">¥98万</div>
+                        <div class="premium-features">
+                            <ul>
+                                <li>无限次AI演示</li>
+                                <li>优先客服支持</li>
+                                <li>专属游戏主题</li>
+                                <li>AI速度无限制</li>
+                                <li>专属游戏音效</li>
+                                <li>终身免费更新</li>
+                                <li>专属客服通道</li>
+                            </ul>
+                        </div>
+                        <button class="premium-button" data-plan="lifetime">立即开通</button>
+                    </div>
+                </div>
+                <div class="premium-footer">
+                    <p>提示：回答"葡萄美酒夜光杯"的下一句，即可获得终身会员资格！</p>
+                    <div class="answer-section">
+                        <input type="text" id="answer-input" placeholder="请输入下一句..." style="padding:8px 12px;border-radius:6px;border:none;width:220px;max-width:90%;font-size:16px;">
+                        <button id="answer-submit" style="padding:8px 18px;border-radius:6px;border:none;background:linear-gradient(45deg,#ffd700,#ffa500);color:#222;font-weight:bold;font-size:16px;cursor:pointer;margin-left:10px;">提交</button>
+                        <div id="answer-tip" style="margin-top:10px;color:#ffd700;"></div>
+                    </div>
+                    <p style="margin-top:18px;">如需帮助，请联系站长获取答案。</p>
                 </div>
             </div>
         </div>

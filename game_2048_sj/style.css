@@ -1030,3 +1030,185 @@ h1 {
 #leaderboard-list::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+/* 付费套餐模态框样式 */
+.premium-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.premium-content {
+    position: relative;
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+    margin: 50px auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 1200px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+.premium-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.premium-header h2 {
+    font-size: 2.5em;
+    background: linear-gradient(45deg, #ffd700, #ffa500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+.premium-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.premium-box {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.premium-box:hover {
+    transform: translateY(-10px);
+}
+
+.premium-box.featured {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+    border: 2px solid #ffd700;
+}
+
+.premium-badge {
+    position: absolute;
+    top: -15px;
+    right: 20px;
+    background: linear-gradient(45deg, #ffd700, #ffa500);
+    color: #000;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.premium-title {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #ffd700;
+}
+
+.premium-price {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 30px;
+    background: linear-gradient(45deg, #ffd700, #ffa500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.premium-features {
+    margin-bottom: 30px;
+}
+
+.premium-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.premium-features li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.premium-features li:last-child {
+    border-bottom: none;
+}
+
+.premium-button {
+    background: linear-gradient(45deg, #ffd700, #ffa500);
+    color: #000;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.premium-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.premium-footer {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.premium-footer p {
+    margin: 10px 0;
+    color: #ffd700;
+}
+
+@media (max-width: 768px) {
+    .premium-content {
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    .premium-header h2 {
+        font-size: 2em;
+    }
+
+    .premium-container {
+        grid-template-columns: 1fr;
+    }
+
+    .premium-box {
+        padding: 20px;
+    }
+}
+
+.ai-info {
+    display: inline-block;
+    margin-left: 12px;
+    font-size: 15px;
+    vertical-align: middle;
+    color: #8f7a66;
+    font-weight: bold;
+}
+
+.ai-info.vip {
+    color: #ffd700;
+    background: linear-gradient(90deg, #fffbe6 60%, #ffe066 100%);
+    border-radius: 12px;
+    padding: 2px 12px;
+    margin-left: 12px;
+    font-size: 15px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(255,215,0,0.08);
+    border: 1px solid #ffe066;
+    letter-spacing: 2px;
+}

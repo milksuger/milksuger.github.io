@@ -71,6 +71,16 @@ class Game2048 {
             this.aiSpeedValue.textContent = this.aiSpeed;
         }
         
+        // 添加AI使用次数限制
+        this.aiUsageCount = parseInt(localStorage.getItem('aiUsageCount')) || 0;
+        this.maxFreeUsage = 10;
+        this.isPremium = localStorage.getItem('isPremium') === 'true';
+        
+        // 添加付费模态框相关元素
+        this.premiumModal = document.getElementById('premium-modal');
+        this.closePremiumButton = document.getElementById('close-premium');
+        this.premiumButtons = document.querySelectorAll('.premium-button');
+        
         // 初始化事件监听
         this.initializeEventListeners();
         
@@ -80,6 +90,9 @@ class Game2048 {
         
         this.winPoints = [2048, 4096, 8192, 16384, 32768]; // 添加获胜点数组
         this.currentWinPointIndex = 0; // 当前获胜点索引
+        
+        this.aiInfo = document.getElementById('ai-info');
+        this.updateAIInfo();
     }
 
     initializeEventListeners() {
@@ -229,8 +242,16 @@ class Game2048 {
         // 添加AI按钮事件监听
         if (this.aiButton) {
             this.aiButton.addEventListener('click', () => {
-                console.log('AI button clicked'); // 添加调试日志
+                if (!this.isPremium && this.aiUsageCount >= this.maxFreeUsage) {
+                    this.showPremiumModal();
+                    return;
+                }
                 this.toggleAI();
+                if (!this.isPremium) {
+                    this.aiUsageCount++;
+                    localStorage.setItem('aiUsageCount', this.aiUsageCount);
+                    this.updateAIInfo();
+                }
             });
         }
 
@@ -250,6 +271,55 @@ class Game2048 {
                 }
             });
         }
+
+        // 添加付费模态框相关事件监听
+        if (this.closePremiumButton) {
+            this.closePremiumButton.addEventListener('click', () => {
+                this.premiumModal.style.display = 'none';
+            });
+        }
+
+        if (this.premiumButtons) {
+            this.premiumButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const plan = e.target.dataset.plan;
+                    this.handlePremiumPurchase(plan);
+                    this.updateAIInfo();
+                });
+            });
+        }
+
+        // 答题开通终身会员
+        const answerInput = document.getElementById('answer-input');
+        const answerSubmit = document.getElementById('answer-submit');
+        const answerTip = document.getElementById('answer-tip');
+        if (answerInput && answerSubmit) {
+            answerSubmit.addEventListener('click', () => {
+                const value = answerInput.value.trim();
+                if (value === '老人小孩优先飞') {
+                    this.isPremium = true;
+                    localStorage.setItem('isPremium', 'true');
+                    answerTip.textContent = '恭喜你，已成功开通终身AI演示大会员！';
+                    answerTip.style.color = '#00ff99';
+                    this.updateAIInfo();
+                    setTimeout(() => {
+                        this.premiumModal.style.display = 'none';
+                        answerTip.textContent = '';
+                        answerInput.value = '';
+                    }, 1500);
+                } else {
+                    answerTip.textContent = '答案不正确，请再试一次！';
+                    answerTip.style.color = '#ffd700';
+                }
+            });
+        }
+
+        // 点击模态框外部关闭
+        window.addEventListener('click', (e) => {
+            if (e.target === this.premiumModal) {
+                this.premiumModal.style.display = 'none';
+            }
+        });
     }
 
     handleKeyPress(event) {
@@ -789,7 +859,12 @@ class Game2048 {
     }
 
     toggleAI() {
-        console.log('Toggle AI called, current state:', this.isAIPlaying); // 添加调试日志
+        console.log('Toggle AI called, current state:', this.isAIPlaying);
+        if (!this.isPremium && this.aiUsageCount >= this.maxFreeUsage) {
+            this.showPremiumModal();
+            return;
+        }
+        
         this.isAIPlaying = !this.isAIPlaying;
         if (this.aiButton) {
             this.aiButton.textContent = this.isAIPlaying ? '停止AI' : 'AI演示';
@@ -803,7 +878,7 @@ class Game2048 {
     }
 
     startAI() {
-        console.log('Starting AI'); // 添加调试日志
+        console.log('Starting AI');
         if (this.gameOver) return;
         
         if (this.aiInterval) {
@@ -826,7 +901,7 @@ class Game2048 {
     }
 
     stopAI() {
-        console.log('Stopping AI'); // 添加调试日志
+        console.log('Stopping AI');
         if (this.aiInterval) {
             clearInterval(this.aiInterval);
             this.aiInterval = null;
@@ -1096,6 +1171,27 @@ class Game2048 {
         this.updateStats();
         this.stopAI();
         this.showDirectionHint(null);
+    }
+
+    showPremiumModal() {
+        this.premiumModal.style.display = 'block';
+    }
+
+    handlePremiumPurchase(plan) {
+        // 跳转到支付界面
+        const paymentUrl = `/payment.html?plan=${plan}`;
+        window.location.href = paymentUrl;
+    }
+
+    updateAIInfo() {
+        if (!this.aiInfo) return;
+        if (this.isPremium) {
+            this.aiInfo.textContent = 'VIP会员';
+            this.aiInfo.classList.add('vip');
+        } else {
+            this.aiInfo.textContent = `剩余AI演示：${Math.max(0, this.maxFreeUsage - this.aiUsageCount)}/${this.maxFreeUsage}次`;
+            this.aiInfo.classList.remove('vip');
+        }
     }
 }
 
