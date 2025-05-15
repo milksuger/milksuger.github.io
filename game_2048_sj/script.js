@@ -320,6 +320,11 @@ class Game2048 {
                 if (row[j] === row[j + 1]) {
                     row[j] *= 2;
                     this.score += row[j];
+                    // 更新最高方块
+                    if (row[j] > this.stats.highestTile) {
+                        this.stats.highestTile = row[j];
+                        this.saveStats();
+                    }
                     this.mergedTiles.push({x: i, y: j});
                     row.splice(j + 1, 1);
                     moved = true;
@@ -343,6 +348,11 @@ class Game2048 {
                 if (row[j] === row[j - 1]) {
                     row[j] *= 2;
                     this.score += row[j];
+                    // 更新最高方块
+                    if (row[j] > this.stats.highestTile) {
+                        this.stats.highestTile = row[j];
+                        this.saveStats();
+                    }
                     this.mergedTiles.push({x: i, y: j});
                     row.splice(j - 1, 1);
                     moved = true;
@@ -366,6 +376,11 @@ class Game2048 {
                 if (column[i] === column[i + 1]) {
                     column[i] *= 2;
                     this.score += column[i];
+                    // 更新最高方块
+                    if (column[i] > this.stats.highestTile) {
+                        this.stats.highestTile = column[i];
+                        this.saveStats();
+                    }
                     this.mergedTiles.push({x: i, y: j});
                     column.splice(i + 1, 1);
                     moved = true;
@@ -391,6 +406,11 @@ class Game2048 {
                 if (column[i] === column[i - 1]) {
                     column[i] *= 2;
                     this.score += column[i];
+                    // 更新最高方块
+                    if (column[i] > this.stats.highestTile) {
+                        this.stats.highestTile = column[i];
+                        this.saveStats();
+                    }
                     this.mergedTiles.push({x: i, y: j});
                     column.splice(i - 1, 1);
                     moved = true;
