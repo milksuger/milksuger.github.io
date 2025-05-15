@@ -92,7 +92,7 @@ class Game2048 {
             } else {
                 this.customSizeInput.style.display = 'none';
                 const size = parseInt(e.target.value);
-                if (size >= 3 && size <= 10) {
+                if (size >= 3 && size <= 100) {
                     this.size = size;
                     this.updateGridSize();
                     this.setupNewGame();
@@ -108,17 +108,32 @@ class Game2048 {
                 e.target.value = value.replace(/\D/g, '');
                 return;
             }
+            // 如果输入的数字超过100，自动限制为100
+            if (parseInt(value) > 100) {
+                e.target.value = '100';
+            }
         });
 
         this.customSizeInputField.addEventListener('change', (e) => {
             const size = parseInt(e.target.value);
-            if (size >= 3 && size <= 10) {
+            if (size >= 3 && size <= 100) {
+                // 如果大小变化超过建议范围，显示警告
+                if (size > 10) {
+                    const confirm = window.confirm(`警告：您输入的大小(${size}x${size})超出了建议范围(3-10)。\n\n过大的棋盘可能会影响游戏性能，是否继续？`);
+                    if (!confirm) {
+                        e.target.value = '4';
+                        this.size = 4;
+                        this.updateGridSize();
+                        this.setupNewGame();
+                        return;
+                    }
+                }
                 this.size = size;
                 this.updateGridSize();
                 this.setupNewGame();
             } else {
                 // 显示错误提示
-                alert('请输入3-10之间的数字');
+                alert('请输入3-100之间的数字\n建议使用3-10之间的数值');
                 // 重置为默认值
                 e.target.value = '4';
                 this.size = 4;
@@ -450,6 +465,7 @@ class Game2048 {
         this.updateStats();
         this.statsModal.style.display = 'flex';
         this.updateScoreChart();
+        this.updateLeaderboardDisplay();
     }
 
     hideStats() {
@@ -696,15 +712,57 @@ class Game2048 {
 
     updateLeaderboardDisplay() {
         const leaderboardList = document.getElementById('leaderboard-list');
-        const size = this.size;
-        const leaderboard = this.stats.leaderboards[size] || [];
-        
+        if (!leaderboardList) return;
+
+        // 清空现有内容
         leaderboardList.innerHTML = '';
-        leaderboard.forEach((entry, index) => {
-            const li = document.createElement('li');
-            const date = new Date(entry.date).toLocaleDateString();
-            li.textContent = `${index + 1}. ${entry.score}分 (${date})`;
-            leaderboardList.appendChild(li);
+
+        // 获取所有棋盘大小的排行榜
+        const sizes = Object.keys(this.stats.leaderboards).sort((a, b) => a - b);
+        
+        sizes.forEach(size => {
+            const leaderboard = this.stats.leaderboards[size] || [];
+            
+            // 创建棋盘大小标题
+            const sizeTitle = document.createElement('h3');
+            sizeTitle.className = 'leaderboard-title';
+            sizeTitle.textContent = `${size}x${size} 排行榜`;
+            leaderboardList.appendChild(sizeTitle);
+
+            // 创建排行榜容器
+            const boardContainer = document.createElement('div');
+            boardContainer.className = 'leaderboard-container';
+
+            if (leaderboard.length === 0) {
+                const emptyMessage = document.createElement('p');
+                emptyMessage.className = 'empty-message';
+                emptyMessage.textContent = '暂无记录';
+                boardContainer.appendChild(emptyMessage);
+            } else {
+                leaderboard.forEach((entry, index) => {
+                    const entryElement = document.createElement('div');
+                    entryElement.className = 'leaderboard-entry';
+                    
+                    const rank = document.createElement('span');
+                    rank.className = 'rank';
+                    rank.textContent = `${index + 1}.`;
+                    
+                    const score = document.createElement('span');
+                    score.className = 'score';
+                    score.textContent = `${entry.score}分`;
+                    
+                    const date = document.createElement('span');
+                    date.className = 'date';
+                    date.textContent = new Date(entry.date).toLocaleDateString();
+                    
+                    entryElement.appendChild(rank);
+                    entryElement.appendChild(score);
+                    entryElement.appendChild(date);
+                    boardContainer.appendChild(entryElement);
+                });
+            }
+            
+            leaderboardList.appendChild(boardContainer);
         });
     }
 
@@ -984,13 +1042,17 @@ class Game2048 {
         
         // 清空并重新创建网格单元格
         this.gridContainer.innerHTML = '';
+        
+        // 使用DocumentFragment优化性能
+        const fragment = document.createDocumentFragment();
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++) {
                 const cell = document.createElement('div');
                 cell.className = 'grid-cell';
-                this.gridContainer.appendChild(cell);
+                fragment.appendChild(cell);
             }
         }
+        this.gridContainer.appendChild(fragment);
     }
 
     setupNewGame() {

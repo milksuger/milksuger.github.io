@@ -889,6 +889,7 @@ h1 {
     display: flex;
     align-items: center;
     gap: 5px;
+    flex-direction: column;
 }
 
 #custom-size {
@@ -898,6 +899,13 @@ h1 {
     border-radius: 4px;
     background: white;
     color: #2c3e50;
+}
+
+.size-tip {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+    text-align: center;
 }
 
 @media screen and (max-width: 520px) {
@@ -911,6 +919,10 @@ h1 {
     #custom-size {
         width: 100%;
         max-width: 200px;
+    }
+    
+    .size-tip {
+        font-size: 10px;
     }
 }
 
@@ -937,4 +949,84 @@ h1 {
     margin-top: 10px;
     color: #776e65;
     font-size: 14px;
+}
+
+/* 排行榜样式 */
+.leaderboard-title {
+    color: #776e65;
+    font-size: 1.2em;
+    margin: 15px 0 10px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #eee;
+}
+
+.leaderboard-container {
+    background: #faf8ef;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard-entry {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    margin: 4px 0;
+    background: #fff;
+    border-radius: 4px;
+    transition: transform 0.2s;
+}
+
+.leaderboard-entry:hover {
+    transform: translateX(5px);
+    background: #f8f6f0;
+}
+
+.leaderboard-entry .rank {
+    width: 30px;
+    color: #776e65;
+    font-weight: bold;
+}
+
+.leaderboard-entry .score {
+    flex: 1;
+    color: #776e65;
+    font-weight: bold;
+}
+
+.leaderboard-entry .date {
+    color: #999;
+    font-size: 0.9em;
+}
+
+.empty-message {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+    font-style: italic;
+}
+
+#leaderboard-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+#leaderboard-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+#leaderboard-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+#leaderboard-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+#leaderboard-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
