@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI图片相册</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 16px 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #222;
+    }
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .header-btn {
+      background: #222;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 20px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+    }
+    .header-btn:hover {
+      background: #444;
+    }
+    .gallery-container {
+      margin-top: 72px;
+      padding: 24px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      padding: 0;
+      list-style: none;
+    }
+    .gallery-item {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .gallery-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+    .gallery-image {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    .gallery-info {
+      padding: 16px;
+    }
+    .gallery-prompt {
+      font-size: 14px;
+      color: #333;
+      margin: 0 0 8px 0;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .gallery-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #666;
+    }
+    .gallery-time {
+      color: #999;
+    }
+    .gallery-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .gallery-action-btn {
+      background: none;
+      border: none;
+      padding: 4px;
+      cursor: pointer;
+      color: #666;
+      transition: color 0.2s;
+    }
+    .gallery-action-btn:hover {
+      color: #222;
+    }
+    .gallery-action-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: #999;
+    }
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .empty-state-text {
+      font-size: 16px;
+      margin: 0;
+    }
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+    .modal-content {
+      max-width: 90vw;
+      max-height: 90vh;
+      position: relative;
+    }
+    .modal-image {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+    .modal-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .modal-info {
+      position: absolute;
+      bottom: -40px;
+      left: 0;
+      right: 0;
+      color: #fff;
+      text-align: center;
+      font-size: 14px;
+    }
+    @media (max-width: 768px) {
+      .header {
+        padding: 12px 16px;
+      }
+      .header h1 {
+        font-size: 18px;
+      }
+      .header-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+      .gallery-container {
+        padding: 16px;
+        margin-top: 60px;
+      }
+      .gallery-grid {
+        gap: 16px;
+      }
+    }
+    @media (max-width: 480px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>AI图片相册</h1>
+    <div class="header-actions">
+      <a href="myChat.html" class="header-btn">返回聊天</a>
+    </div>
+  </div>
+  <div class="gallery-container">
+    <ul class="gallery-grid" id="galleryGrid"></ul>
+  </div>
+  <div class="modal" id="imageModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">×</button>
+      <img class="modal-image" id="modalImage" src="" alt="预览图片">
+      <div class="modal-info" id="modalInfo"></div>
+    </div>
+  </div>
+  <script>
+    // 从localStorage获取图片数据
+    function getGalleryImages() {
+      return JSON.parse(localStorage.getItem('gallery_images') || '[]');
+    }
+
+    // 保存图片数据到localStorage
+    function saveGalleryImage(imageData) {
+      const images = getGalleryImages();
+      images.unshift(imageData); // 新图片添加到开头
+      localStorage.setItem('gallery_images', JSON.stringify(images));
+    }
+
+    // 渲染图片网格
+    function renderGallery() {
+      const images = getGalleryImages();
+      const grid = document.getElementById('galleryGrid');
+      
+      if (images.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">🖼️</div>
+            <p class="empty-state-text">暂无生成的图片</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = images.map(image => `
+        <li class="gallery-item">
+          <img class="gallery-image" src="${image.url}" alt="${image.prompt}" loading="lazy">
+          <div class="gallery-info">
+            <p class="gallery-prompt">${image.prompt}</p>
+            <div class="gallery-meta">
+              <span class="gallery-time">${formatTime(new Date(image.time))}</span>
+              <div class="gallery-actions">
+                <button class="gallery-action-btn" title="复制图片链接" onclick="copyImageUrl('${image.url}')">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                  </svg>
+                </button>
+                <button class="gallery-action-btn" title="删除图片" onclick="deleteImage('${image.id}')">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+      `).join('');
+
+      // 添加图片点击预览
+      document.querySelectorAll('.gallery-image').forEach(img => {
+        img.addEventListener('click', () => showImageModal(img.src, img.alt));
+      });
+    }
+
+    // 显示图片预览模态框
+    function showImageModal(url, prompt) {
+      const modal = document.getElementById('imageModal');
+      const modalImage = document.getElementById('modalImage');
+      const modalInfo = document.getElementById('modalInfo');
+      
+      modalImage.src = url;
+      modalInfo.textContent = prompt;
+      modal.style.display = 'flex';
+    }
+
+    // 关闭图片预览模态框
+    function closeImageModal() {
+      document.getElementById('imageModal').style.display = 'none';
+    }
+
+    // 复制图片链接
+    function copyImageUrl(url) {
+      navigator.clipboard.writeText(url).then(() => {
+        alert('图片链接已复制到剪贴板');
+      }).catch(err => {
+        console.error('复制失败:', err);
+        // 如果clipboard API失败，尝试使用传统方法
+        const textarea = document.createElement('textarea');
+        textarea.value = url;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          alert('图片链接已复制到剪贴板');
+        } catch (e) {
+          console.error('传统复制方法也失败了:', e);
+          alert('复制失败，请手动复制图片链接');
+        }
+        document.body.removeChild(textarea);
+      });
+    }
+
+    // 删除图片
+    function deleteImage(id) {
+      if (!confirm('确定要删除这张图片吗？')) return;
+      
+      const images = getGalleryImages();
+      const newImages = images.filter(img => img.id !== id);
+      localStorage.setItem('gallery_images', JSON.stringify(newImages));
+      renderGallery();
+    }
+
+    // 格式化时间
+    function formatTime(date) {
+      const now = new Date();
+      const diff = now - date;
+      const isToday = date.toDateString() === now.toDateString();
+      const isYesterday = new Date(now - 86400000).toDateString() === date.toDateString();
+      
+      if (isToday) {
+        return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+      } else if (isYesterday) {
+        return '昨天 ' + date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+      } else if (diff < 7 * 86400000) {
+        const days = ['日', '一', '二', '三', '四', '五', '六'];
+        return '星期' + days[date.getDay()] + ' ' + date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+      } else {
+        return date.toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit' }) + ' ' + 
+               date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+      }
+    }
+
+    // 监听来自聊天页面的消息
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'gallery_images') {
+        renderGallery();
+      }
+    });
+
+    // 初始化
+    window.onload = function() {
+      renderGallery();
+      
+      // 绑定模态框关闭事件
+      document.getElementById('modalClose').addEventListener('click', closeImageModal);
+      document.getElementById('imageModal').addEventListener('click', function(e) {
+        if (e.target === this) closeImageModal();
+      });
+    };
+  </script>
+</body>
+</html> 
