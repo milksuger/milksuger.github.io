@@ -702,7 +702,7 @@
     </div>
     <div class="history-actions">
       <button class="history-btn" id="newChatBtn">新对话</button>
-      <button class="history-btn" id="showHistoryBtn">历史记录</button>
+    <button class="history-btn" id="showHistoryBtn">历史记录</button>
       <button class="history-btn" id="showGalleryBtn">图片相册</button>
     </div>
   </div>
@@ -918,68 +918,68 @@
 
       if (currentModelType === 'chat') {
         // 对话模型处理
-        const messages = conversationContext.map(msg => ({
-          role: msg.role,
-          content: msg.content
-        }));
+      const messages = conversationContext.map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }));
 
-        fetch('https://api.siliconflow.cn/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': 'Bearer ' + SILICONFLOW_API_KEY,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
+      fetch('https://api.siliconflow.cn/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + SILICONFLOW_API_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
             model: currentModel,
-            messages: messages,
-            stream: true,
-            max_tokens: 512,
-            temperature: 0.7,
-            top_p: 0.7
-          })
+          messages: messages,
+          stream: true,
+          max_tokens: 512,
+          temperature: 0.7,
+          top_p: 0.7
         })
-        .then(response => {
-          if (!response.body) throw new Error('No stream');
-          const reader = response.body.getReader();
-          const decoder = new TextDecoder('utf-8');
-          let buffer = '';
+      })
+      .then(response => {
+        if (!response.body) throw new Error('No stream');
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let buffer = '';
           let aiContent = '';
 
-          function read() {
-            reader.read().then(({ done, value }) => {
-              if (done) {
-                if (buffer) appendStreamText(buffer);
-                loadingDots.style.display = 'none';
-                return;
-              }
-              buffer += decoder.decode(value, { stream: true });
-              let lines = buffer.split('\n');
+        function read() {
+          reader.read().then(({ done, value }) => {
+            if (done) {
+              if (buffer) appendStreamText(buffer);
+              loadingDots.style.display = 'none';
+              return;
+            }
+            buffer += decoder.decode(value, { stream: true });
+            let lines = buffer.split('\n');
               buffer = lines.pop();
-              for (const line of lines) {
-                if (line.startsWith('data:')) {
-                  const data = line.replace(/^data:/, '').trim();
-                  if (data === '[DONE]') {
+            for (const line of lines) {
+              if (line.startsWith('data:')) {
+                const data = line.replace(/^data:/, '').trim();
+                if (data === '[DONE]') {
+                  loadingDots.style.display = 'none';
+                  return;
+                }
+                try {
+                  const json = JSON.parse(data);
+                  const delta = json.choices?.[0]?.delta?.content || json.choices?.[0]?.message?.content || '';
+                  if (delta) {
                     loadingDots.style.display = 'none';
-                    return;
-                  }
-                  try {
-                    const json = JSON.parse(data);
-                    const delta = json.choices?.[0]?.delta?.content || json.choices?.[0]?.message?.content || '';
-                    if (delta) {
-                      loadingDots.style.display = 'none';
-                      aiMsgDiv.style.display = 'inline';
+                    aiMsgDiv.style.display = 'inline';
                       aiContent += delta;
                       aiMsgDiv.innerHTML = marked.parse(aiContent);
                       chatContainer.scrollTop = chatContainer.scrollHeight;
-                    }
-                  } catch (e) {
-                    // 忽略解析错误
                   }
+                } catch (e) {
+                  // 忽略解析错误
                 }
               }
-              read();
-            });
-          }
+            }
+            read();
+          });
+        }
 
           read();
           // 监听流结束后保存AI消息
@@ -987,27 +987,27 @@
             await reader.closed;
             if (aiContent) {
               saveChatHistory('ai', aiContent);
-              // 显示复制按钮和时间
-              const aiCopyBtn = aiRow.querySelector('.copy-btn');
-              const aiTimeDiv = aiRow.querySelector('.message-time');
-              aiCopyBtn.style.display = 'flex';
-              aiTimeDiv.style.display = 'block';
-              aiTimeDiv.textContent = formatTime(new Date());
-              // 添加复制功能
-              aiCopyBtn.onclick = function() {
-                navigator.clipboard.writeText(aiContent).then(() => {
-                  this.classList.add('copied');
-                  setTimeout(() => this.classList.remove('copied'), 2000);
-                });
-              };
-            }
-          })();
-        })
-        .catch(() => {
-          loadingDots.style.display = 'none';
-          aiMsgDiv.style.display = 'inline';
-          aiMsgDiv.textContent = 'AI接口调用失败';
-        });
+          // 显示复制按钮和时间
+          const aiCopyBtn = aiRow.querySelector('.copy-btn');
+          const aiTimeDiv = aiRow.querySelector('.message-time');
+          aiCopyBtn.style.display = 'flex';
+          aiTimeDiv.style.display = 'block';
+          aiTimeDiv.textContent = formatTime(new Date());
+          // 添加复制功能
+          aiCopyBtn.onclick = function() {
+            navigator.clipboard.writeText(aiContent).then(() => {
+              this.classList.add('copied');
+              setTimeout(() => this.classList.remove('copied'), 2000);
+            });
+          };
+        }
+        })();
+      })
+      .catch(() => {
+        loadingDots.style.display = 'none';
+        aiMsgDiv.style.display = 'inline';
+        aiMsgDiv.textContent = 'AI接口调用失败';
+      });
       } else {
         // 生图模型处理
         fetch('https://api.siliconflow.cn/v1/images/generations', {
@@ -1020,7 +1020,7 @@
             model: currentModel,
             prompt: msg,
             image_size: "1024x1024",
-            batch_size: 1,
+            batch_size: 4,
             num_inference_steps: 20,
             guidance_scale: 7.5
           })
@@ -1029,35 +1029,42 @@
         .then(data => {
           loadingDots.style.display = 'none';
           aiMsgDiv.style.display = 'inline';
-          if (data.images && data.images[0] && data.images[0].url) {
-            const imageUrl = data.images[0].url;
-            aiMsgDiv.innerHTML = `
-              <div style="display:flex;flex-direction:column;gap:8px;">
-                <img src="${imageUrl}" style="max-width:100%;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" alt="生成的图片" />
+          if (data.images && data.images.length > 0) {
+            const imagesHtml = data.images.map((image, index) => `
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:${index < data.images.length - 1 ? '16px' : '0'};">
+                <img src="${image.url}" style="max-width:100%;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" alt="生成的图片 ${index + 1}" />
                 <div style="font-size:13px;color:#666;text-align:right;">
-                  生成时间: ${data.timings?.inference ? (data.timings.inference / 1000).toFixed(1) + '秒' : '未知'}
-                  ${data.seed ? ` | Seed: ${data.seed}` : ''}
+                  图片 ${index + 1} | 生成时间: ${data.timings?.inference ? (data.timings.inference / 1000).toFixed(1) + '秒' : '未知'}
+                  ${data.seeds?.[index] ? ` | Seed: ${data.seeds[index]}` : ''}
                 </div>
+              </div>
+            `).join('');
+            
+            aiMsgDiv.innerHTML = `
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                ${imagesHtml}
               </div>`;
             
             // 保存到相册
-            const imageData = {
-              id: Date.now().toString(),
-              url: imageUrl,
-              prompt: msg,
-              time: new Date().toISOString(),
-              model: currentModel,
-              seed: data.seed,
-              inference_time: data.timings?.inference ? (data.timings.inference / 1000).toFixed(1) : null
-            };
-            
-            // 获取现有图片数据
             const images = JSON.parse(localStorage.getItem('gallery_images') || '[]');
-            images.unshift(imageData); // 新图片添加到开头
+            data.images.forEach((image, index) => {
+              const imageData = {
+                id: (Date.now() + index).toString(),
+                url: image.url,
+                prompt: msg,
+                time: new Date().toISOString(),
+                model: currentModel,
+                seed: data.seeds?.[index],
+                inference_time: data.timings?.inference ? (data.timings.inference / 1000).toFixed(1) : null
+              };
+              images.unshift(imageData); // 新图片添加到开头
+            });
             localStorage.setItem('gallery_images', JSON.stringify(images));
             
             // 保存到聊天历史
-            saveChatHistory('ai', `[图片] ${imageUrl}\n生成时间: ${data.timings?.inference ? (data.timings.inference / 1000).toFixed(1) + '秒' : '未知'}${data.seed ? `\nSeed: ${data.seed}` : ''}`);
+            const imageUrls = data.images.map(img => img.url).join('\n');
+            const seedsInfo = data.seeds ? `\nSeeds: ${data.seeds.join(', ')}` : '';
+            saveChatHistory('ai', `[图片组]\n${imageUrls}\n生成时间: ${data.timings?.inference ? (data.timings.inference / 1000).toFixed(1) + '秒' : '未知'}${seedsInfo}`);
           } else {
             aiMsgDiv.textContent = '图片生成失败';
           }

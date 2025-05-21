@@ -67,16 +67,61 @@
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      min-height: 280px;
     }
     .gallery-item:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     }
-    .gallery-image {
+    .gallery-image-wrapper {
       width: 100%;
       aspect-ratio: 1;
+      position: relative;
+      background: #f5f5f5;
+      overflow: hidden;
+    }
+    .gallery-image {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .gallery-image.loaded {
+      opacity: 1;
+    }
+    .loading-placeholder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #f5f5f5;
+      color: #999;
+      font-size: 14px;
+    }
+    .loading-placeholder .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid #eee;
+      border-top-color: #666;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 8px;
+    }
+    .loading-placeholder .error-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+      color: #ff4d4f;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
     .gallery-info {
       padding: 16px;
@@ -233,6 +278,41 @@
       localStorage.setItem('gallery_images', JSON.stringify(images));
     }
 
+    // 图片加载状态管理
+    const imageLoadStates = new Map();
+    const preloadQueue = [];
+    const MAX_PRELOAD = 3; // 最大预加载数量
+
+    // 预加载图片
+    function preloadImage(url) {
+      if (preloadQueue.includes(url)) return;
+      preloadQueue.push(url);
+      processPreloadQueue();
+    }
+
+    // 处理预加载队列
+    function processPreloadQueue() {
+      while (preloadQueue.length > 0 && imageLoadStates.size < MAX_PRELOAD) {
+        const url = preloadQueue.shift();
+        if (!imageLoadStates.has(url)) {
+          const img = new Image();
+          imageLoadStates.set(url, { status: 'loading', img });
+          
+          img.onload = () => {
+            imageLoadStates.set(url, { status: 'loaded', img });
+            processPreloadQueue();
+          };
+          
+          img.onerror = () => {
+            imageLoadStates.set(url, { status: 'error', img: null });
+            processPreloadQueue();
+          };
+          
+          img.src = url;
+        }
+      }
+    }
+
     // 渲染图片网格
     function renderGallery() {
       const images = getGalleryImages();
@@ -250,7 +330,17 @@
 
       grid.innerHTML = images.map(image => `
         <li class="gallery-item">
-          <img class="gallery-image" src="${image.url}" alt="${image.prompt}" loading="lazy">
+          <div class="gallery-image-wrapper">
+            <div class="loading-placeholder">
+              <div class="spinner"></div>
+              <span>加载中...</span>
+            </div>
+            <img class="gallery-image" 
+                 data-src="${image.url}" 
+                 alt="${image.prompt}" 
+                 loading="lazy"
+                 onerror="this.onerror=null;this.parentElement.querySelector('.loading-placeholder').innerHTML='<div class=\'error-icon\'>⚠️</div><span>加载失败</span>';">
+          </div>
           <div class="gallery-info">
             <p class="gallery-prompt">${image.prompt}</p>
             <div class="gallery-meta">
@@ -272,9 +362,55 @@
         </li>
       `).join('');
 
-      // 添加图片点击预览
-      document.querySelectorAll('.gallery-image').forEach(img => {
-        img.addEventListener('click', () => showImageModal(img.src, img.alt));
+      // 初始化懒加载
+      initLazyLoading();
+    }
+
+    // 初始化懒加载
+    function initLazyLoading() {
+      const lazyImages = document.querySelectorAll('.gallery-image[data-src]');
+      
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const url = img.dataset.src;
+            
+            // 检查是否已预加载
+            const loadState = imageLoadStates.get(url);
+            if (loadState?.status === 'loaded') {
+              // 如果已预加载，直接显示
+              img.src = url;
+              img.classList.add('loaded');
+              img.parentElement.querySelector('.loading-placeholder').style.display = 'none';
+            } else {
+              // 否则开始加载
+              img.onload = () => {
+                img.classList.add('loaded');
+                img.parentElement.querySelector('.loading-placeholder').style.display = 'none';
+                // 预加载下一张图片
+                const nextImg = img.closest('.gallery-item').nextElementSibling?.querySelector('.gallery-image');
+                if (nextImg?.dataset.src) {
+                  preloadImage(nextImg.dataset.src);
+                }
+              };
+              img.src = url;
+            }
+            
+            observer.unobserve(img);
+          }
+        });
+      }, {
+        rootMargin: '50px 0px', // 提前50px开始加载
+        threshold: 0.1
+      });
+
+      lazyImages.forEach(img => {
+        imageObserver.observe(img);
+        // 预加载第一张图片
+        if (img === lazyImages[0]) {
+          preloadImage(img.dataset.src);
+        }
       });
     }
 
@@ -284,7 +420,36 @@
       const modalImage = document.getElementById('modalImage');
       const modalInfo = document.getElementById('modalInfo');
       
-      modalImage.src = url;
+      // 添加加载状态
+      modalImage.style.opacity = '0';
+      modalImage.parentElement.style.position = 'relative';
+      const loadingPlaceholder = document.createElement('div');
+      loadingPlaceholder.className = 'loading-placeholder';
+      loadingPlaceholder.innerHTML = '<div class="spinner"></div><span>加载中...</span>';
+      modalImage.parentElement.appendChild(loadingPlaceholder);
+      
+      // 检查是否已预加载
+      const loadState = imageLoadStates.get(url);
+      if (loadState?.status === 'loaded') {
+        modalImage.src = url;
+        modalImage.onload = () => {
+          modalImage.style.opacity = '1';
+          loadingPlaceholder.remove();
+        };
+      } else {
+        modalImage.onload = () => {
+          modalImage.style.opacity = '1';
+          loadingPlaceholder.remove();
+          // 预加载下一张图片
+          const currentIndex = getGalleryImages().findIndex(img => img.url === url);
+          const nextImage = getGalleryImages()[currentIndex + 1];
+          if (nextImage) {
+            preloadImage(nextImage.url);
+          }
+        };
+        modalImage.src = url;
+      }
+      
       modalInfo.textContent = prompt;
       modal.style.display = 'flex';
     }
