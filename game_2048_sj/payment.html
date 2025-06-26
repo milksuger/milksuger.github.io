@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支付中心 - 2048游戏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .payment-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .payment-header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .payment-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .payment-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .order-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .order-details {
+            flex: 1;
+        }
+
+        .order-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .payment-methods {
+            margin-top: 20px;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            border-color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .payment-method.selected {
+            border-color: #3498db;
+            background: #f0f7ff;
+        }
+
+        .payment-method input[type="radio"] {
+            margin-right: 15px;
+        }
+
+        .payment-method-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-method-icon img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .payment-method-info {
+            flex: 1;
+        }
+
+        .payment-method-name {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .payment-method-desc {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .payment-button {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .payment-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .payment-button:active {
+            transform: translateY(0);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .qr-code img {
+            max-width: 200px;
+            margin-bottom: 10px;
+        }
+
+        .qr-code p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .payment-container {
+                margin: 20px auto;
+                padding: 15px;
+            }
+
+            .payment-card {
+                padding: 20px;
+            }
+
+            .order-amount {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-header">
+            <h1>支付中心</h1>
+            <p>请选择支付方式完成支付</p>
+        </div>
+
+        <div class="payment-card">
+            <div class="order-info">
+                <div class="order-details">
+                    <h2 id="plan-name">加载中...</h2>
+                    <p id="order-id">订单号：加载中...</p>
+                </div>
+                <div class="order-amount" id="order-amount">¥0.00</div>
+            </div>
+
+            <div class="payment-methods">
+                <div class="payment-method" data-method="alipay">
+                    <input type="radio" name="payment" id="alipay" value="alipay">
+                    <div class="payment-method-icon">
+                        <!-- <img src="https://ts1.tc.mm.bing.net/th/id/R-C.9710db5ab36d67b94c491fe9fb1223ab?rik=UHxTNvtYQJKc3Q&riu=http%3a%2f%2fwww.kuaipng.com%2fUploads%2fpic%2fw%2f2024%2f01-20%2f149784%2fwater_149784_698_698_.png&ehk=mh8TMdPyH1Cav3vFhYq39DeAkm9%2bzLDAr1usichN21I%3d&risl=&pid=ImgRaw&r=0" alt="支付宝"> -->
+                        <img src="alipay.jpg" alt="支付宝">
+                    </div>
+                    <div class="payment-method-info">
+                        <div class="payment-method-name">支付宝</div>
+                        <div class="payment-method-desc">推荐使用支付宝支付</div>
+                    </div>
+                </div>
+
+                <div class="payment-method" data-method="wechat">
+                    <input type="radio" name="payment" id="wechat" value="wechat">
+                    <div class="payment-method-icon">
+                        <img src="./wepay.jpg" alt="微信支付">
+                    </div>
+                    <div class="payment-method-info">
+                        <div class="payment-method-name">微信支付</div>
+                        <div class="payment-method-desc">使用微信扫码支付</div>
+                    </div>
+                </div>
+
+                <div class="payment-method" data-method="unionpay">
+                    <input type="radio" name="payment" id="unionpay" value="unionpay">
+                    <div class="payment-method-icon">
+                        <img src="./yinlian.jpg" alt="银联">
+                    </div>
+                    <div class="payment-method-info">
+                        <div class="payment-method-name">银联支付</div>
+                        <div class="payment-method-desc">支持储蓄卡和信用卡</div>
+                    </div>
+                </div>
+
+                <div class="payment-method" data-method="visa">
+                    <input type="radio" name="payment" id="visa" value="visa">
+                    <div class="payment-method-icon">
+                        <img src="https://seeklogo.com/images/V/visa-logo-6F4057663D-seeklogo.com.png" alt="Visa">
+                    </div>
+                    <div class="payment-method-info">
+                        <div class="payment-method-name">Visa</div>
+                        <div class="payment-method-desc">国际信用卡支付</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="qr-code" id="qr-code">
+                <img src="" alt="支付二维码">
+                <p>请使用手机扫码支付</p>
+            </div>
+
+            <button class="payment-button" id="pay-button">确认支付</button>
+        </div>
+
+        <a href="index.html" class="back-link">返回游戏</a>
+    </div>
+
+    <script>
+        // 获取URL参数
+        const urlParams = new URLSearchParams(window.location.search);
+        const plan = urlParams.get('plan');
+
+        // 套餐价格映射
+        const planPrices = {
+            'basic': '9.8万',
+            'premium': '19.8万',
+            'lifetime': '98万'
+        };
+
+        // 套餐名称映射
+        const planNames = {
+            'basic': '基础套餐',
+            'premium': '高级套餐',
+            'lifetime': '终身会员'
+        };
+
+        // 生成订单号
+        function generateOrderId() {
+            return 'ORDER' + Date.now() + Math.random().toString(36).substr(2, 5).toUpperCase();
+        }
+
+        // 更新订单信息
+        function updateOrderInfo() {
+            const orderId = generateOrderId();
+            const price = planPrices[plan] || '0.00';
+            const name = planNames[plan] || '未知套餐';
+
+            document.getElementById('plan-name').textContent = name;
+            document.getElementById('order-id').textContent = `订单号：${orderId}`;
+            document.getElementById('order-amount').textContent = `¥${price}`;
+        }
+
+        // 处理支付方式选择
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', () => {
+                // 移除其他支付方式的选中状态
+                document.querySelectorAll('.payment-method').forEach(m => {
+                    m.classList.remove('selected');
+                });
+                // 添加当前支付方式的选中状态
+                method.classList.add('selected');
+                // 选中对应的radio按钮
+                method.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+
+        // 处理支付按钮点击
+        document.getElementById('pay-button').addEventListener('click', () => {
+            const selectedMethod = document.querySelector('input[name="payment"]:checked');
+            if (!selectedMethod) {
+                alert('请选择支付方式');
+                return;
+            }
+
+            const method = selectedMethod.value;
+            const qrCode = document.getElementById('qr-code');
+            
+            // 显示二维码（这里只是示例，实际应该根据选择的支付方式显示对应的二维码）
+            qrCode.style.display = 'block';
+            qrCode.querySelector('img').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(window.location.href)}`;
+            
+            // 模拟支付过程
+            setTimeout(() => {
+                alert('支付功能正在开发中，敬请期待！');
+            }, 1000);
+        });
+
+        // 页面加载时更新订单信息
+        window.onload = updateOrderInfo;
+    </script>
+</body>
+</html> 

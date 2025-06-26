@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cursor提示词网站 - 探索AI编程助手的最佳实践">
+    <meta name="theme-color" content="#2563eb">
+    <title>Cursor提示词网站</title>
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="styles/main.css" as="style">
+    <link rel="preload" href="js/main.js" as="script">
+    <link rel="preload" href="nav.html" as="fetch" crossorigin>
+    
+    <!-- 样式表 -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/best-practices.css">
+    
+    <!-- 代码高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="print" onload="this.media='all'">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
+    
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+    <!--  百度统计  -->
+    <script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?f2b98a4560572ecd960cb0be44c9798f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</head>
+<body class="index">
+    <!-- 导航占位符 -->
+    <div id="nav-placeholder"></div>
+    
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="game-quick-entry">
+        <a href="chat/myChat.html" class="game-entry-btn"><i class="fas fa-dice-four"></i> AI对话 | AI生图</a>
+        <a href="game_2048_sj/index.html" class="game-entry-btn"><i class="fas fa-dice-four"></i> 增强版2048小游戏</a>
+        <a href="game_2048/index.html" class="game-entry-btn"><i class="fas fa-dice-four"></i> 2048小游戏</a>
+        <a href="game_wzq/index.html" class="game-entry-btn"><i class="fas fa-chess-board"></i> 五子棋游戏</a>
+    </div>
+    
+    <!-- 主要内容 -->
+    <main>
+        <!-- 英雄区域 -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero__container">
+                <h1 id="hero-title" class="hero__title">探索AI编程的未来</h1>
+                <p class="hero__description">通过Cursor提示词，释放您的编程潜能</p>
+                <a href="#features" class="button button--primary">了解更多</a>
+            </div>
+        </section>
+
+        <!-- 特性部分 -->
+        <section id="features" class="features" aria-labelledby="features-title">
+            <div class="features__container">
+                <h2 id="features-title" class="section-title">主要特性</h2>
+                <div class="features__grid">
+                    <article class="feature-card">
+                        <div class="feature-card__icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="feature-card__title">智能代码补全</h3>
+                        <p class="feature-card__description">基于上下文的智能代码建议，提高编码效率</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-card__icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3 class="feature-card__title">自然语言交互</h3>
+                        <p class="feature-card__description">使用自然语言描述需求，AI助手帮您实现</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-card__icon">
+                            <i class="fas fa-sync"></i>
+                        </div>
+                        <h3 class="feature-card__title">代码重构</h3>
+                        <p class="feature-card__description">智能代码重构建议，提升代码质量</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 最佳实践部分 -->
+        <section id="best-practices" class="practices-content" aria-labelledby="practices-title">
+            <div class="practices-content__container">
+                <h2 id="practices-title" class="practices-content__title">最佳实践</h2>
+                <div class="practices-grid">
+                    <!-- 提示词编写 -->
+                    <article class="practice-card">
+                        <div class="practice-card__header">
+                            <div class="practice-card__icon">
+                                <i class="fas fa-pen-fancy"></i>
+                            </div>
+                            <h2 class="practice-card__title">提示词编写</h2>
+                        </div>
+                        <div class="practice-card__content">
+                            <h3>关键原则</h3>
+                            <ul>
+                                <li>使用清晰、具体的语言</li>
+                                <li>提供必要的上下文信息</li>
+                                <li>明确指定期望的输出格式</li>
+                                <li>分步骤描述复杂任务</li>
+                            </ul>
+                            <h3>示例</h3>
+                            <pre><code class="language-text"><i class="fas fa-times-circle"></i> 不好的提示词：
+"写一个函数"
+
+<i class="fas fa-check-circle"></i> 好的提示词：
+"编写一个JavaScript函数，接收一个字符串数组作为参数，
+返回一个新数组，其中包含所有长度大于5的字符串，
+并按字母顺序排序。"</code></pre>
+                        </div>
+                    </article>
+
+                    <!-- 代码审查 -->
+                    <article class="practice-card">
+                        <div class="practice-card__header">
+                            <div class="practice-card__icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h2 class="practice-card__title">代码审查</h2>
+                        </div>
+                        <div class="practice-card__content">
+                            <h3>关键原则</h3>
+                            <ul>
+                                <li>检查代码质量和性能</li>
+                                <li>识别潜在的安全问题</li>
+                                <li>确保代码可维护性</li>
+                                <li>验证最佳实践的应用</li>
+                            </ul>
+                            <h3>示例</h3>
+                            <pre><code class="language-text"><i class="fas fa-times-circle"></i> 不好的提示词：
+"检查这段代码"
+
+<i class="fas fa-check-circle"></i> 好的提示词：
+"请审查以下代码，重点关注：
+1. 性能优化机会
+2. 潜在的安全漏洞
+3. 代码可读性和可维护性
+4. 是否符合最佳实践"</code></pre>
+                        </div>
+                    </article>
+
+                    <!-- 错误处理 -->
+                    <article class="practice-card">
+                        <div class="practice-card__header">
+                            <div class="practice-card__icon">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <h2 class="practice-card__title">错误处理</h2>
+                        </div>
+                        <div class="practice-card__content">
+                            <h3>关键原则</h3>
+                            <ul>
+                                <li>提供详细的错误信息</li>
+                                <li>包含复现步骤</li>
+                                <li>说明预期行为</li>
+                                <li>提供相关代码片段</li>
+                            </ul>
+                            <h3>示例</h3>
+                            <pre><code class="language-text"><i class="fas fa-times-circle"></i> 不好的提示词：
+"代码不工作"
+
+<i class="fas fa-check-circle"></i> 好的提示词：
+"在尝试运行以下代码时遇到错误：
+[代码片段]
+
+错误信息：
+[错误详情]
+
+预期行为：
+[期望结果]
+
+已尝试的解决方案：
+[已尝试的方法]"</code></pre>
+                        </div>
+                    </article>
+
+                    <!-- 性能优化 -->
+                    <article class="practice-card">
+                        <div class="practice-card__header">
+                            <div class="practice-card__icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <h2 class="practice-card__title">性能优化</h2>
+                        </div>
+                        <div class="practice-card__content">
+                            <h3>关键原则</h3>
+                            <ul>
+                                <li>明确性能目标</li>
+                                <li>提供性能基准</li>
+                                <li>说明使用场景</li>
+                                <li>考虑资源限制</li>
+                            </ul>
+                            <h3>示例</h3>
+                            <pre><code class="language-text"><i class="fas fa-times-circle"></i> 不好的提示词：
+"优化这段代码"
+
+<i class="fas fa-check-circle"></i> 好的提示词：
+"请优化以下代码的性能：
+[代码片段]
+
+当前性能：
+- 执行时间：X ms
+- 内存使用：Y MB
+- CPU使用率：Z%
+
+目标：
+- 执行时间 < X/2 ms
+- 内存使用 < Y/2 MB
+
+使用场景：
+[具体场景描述]"</code></pre>
+                        </div>
+                    </article>
+
+                    <!-- 代码重构 -->
+                    <article class="practice-card">
+                        <div class="practice-card__header">
+                            <div class="practice-card__icon">
+                                <i class="fas fa-code-branch"></i>
+                            </div>
+                            <h2 class="practice-card__title">代码重构</h2>
+                        </div>
+                        <div class="practice-card__content">
+                            <h3>关键原则</h3>
+                            <ul>
+                                <li>明确重构目标</li>
+                                <li>保持功能不变</li>
+                                <li>提高代码质量</li>
+                                <li>遵循设计模式</li>
+                            </ul>
+                            <h3>示例</h3>
+                            <pre><code class="language-text"><i class="fas fa-times-circle"></i> 不好的提示词：
+"重构这段代码"
+
+<i class="fas fa-check-circle"></i> 好的提示词：
+"请重构以下代码，目标是：
+1. 提高代码可读性
+2. 减少重复代码
+3. 应用适当的设计模式
+4. 优化性能
+
+当前代码：
+[代码片段]
+
+期望的输出：
+- 重构后的代码
+- 重构说明
+- 性能对比"</code></pre>
+                        </div>
+                    </article>
+
+                    <!-- 测试用例 -->
+                    <article class="practice-card">
+                        <div class="practice-card__header">
+                            <div class="practice-card__icon">
+                                <i class="fas fa-vial"></i>
+                            </div>
+                            <h2 class="practice-card__title">测试用例</h2>
+                        </div>
+                        <div class="practice-card__content">
+                            <h3>关键原则</h3>
+                            <ul>
+                                <li>覆盖主要功能</li>
+                                <li>包含边界条件</li>
+                                <li>测试异常情况</li>
+                                <li>保持测试独立</li>
+                            </ul>
+                            <h3>示例</h3>
+                            <pre><code class="language-text"><i class="fas fa-times-circle"></i> 不好的提示词：
+"写个测试"
+
+<i class="fas fa-check-circle"></i> 好的提示词：
+"请为以下函数编写单元测试：
+[函数代码]
+
+要求：
+1. 测试正常输入
+2. 测试边界条件
+3. 测试异常情况
+4. 使用适当的测试框架
+5. 包含测试说明"</code></pre>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer__container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h2 class="footer__title">关于我们</h2>
+                    <p class="footer__description">Cursor提示词网站致力于为开发者提供最优质的AI编程助手体验，帮助您更高效地完成编程任务。</p>
+                    <div class="footer__social">
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                        <a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div class="footer__section">
+                    <h2 class="footer__title">快速链接</h2>
+                    <nav>
+                        <ul class="footer__links">
+                            <li><a href="#features"><i class="fas fa-star"></i>特性</a></li>
+                            <li><a href="#examples"><i class="fas fa-code"></i>示例</a></li>
+                            <li><a href="#best-practices"><i class="fas fa-book"></i>最佳实践</a></li>
+                            <li><a href="docs.html"><i class="fas fa-file-alt"></i>学习文档</a></li>
+                            <li><a href="feedback.html"><i class="fas fa-comment"></i>用户反馈</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="footer__section">
+                    <h2 class="footer__title">资源中心</h2>
+                    <ul class="footer__links">
+                        <li><a href="templates.html"><i class="fas fa-copy"></i>模板库</a></li>
+                        <li><a href="free-plan.html"><i class="fas fa-gift"></i>免费方案</a></li>
+                        <li><a href="resources.html"><i class="fas fa-tools"></i>开发工具</a></li>
+                        <li><a href="about.html"><i class="fas fa-user"></i>关于作者</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p class="footer__copyright">&copy; 2024 Cursor提示词网站. 保留所有权利. <a href="privacy.html">隐私政策</a> | <a href="terms.html">使用条款</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="back-to-top" aria-label="返回顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- 脚本 -->
+    <script>
+        // 导航加载
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('nav.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('nav-placeholder').innerHTML = data;
+                    // 动态插入 main.js，确保事件绑定
+                    var script = document.createElement('script');
+                    script.src = 'js/main.js';
+                    document.body.appendChild(script);
+                })
+                .catch(error => console.error('导航加载失败:', error));
+        });
+    </script>
+    <!-- <script src="js/main.js" defer></script> -->
+    <script src="js/best-practices.js" defer></script>
+</body>
+</html> 

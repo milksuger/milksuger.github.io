@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品集 - Milksuger</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/portfolio.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?f2b98a4560572ecd960cb0be44c9798f";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</head>
+<body>
+    <a href="index.html" class="back-home-btn" title="返回首页"><i class="fas fa-home"></i> 返回首页</a>
+    <div id="nav-placeholder"></div>
+
+    <main class="portfolio-container">
+        <section class="portfolio-header">
+            <h1>我的作品集</h1>
+            <p>展示我的项目经验和创作成果</p>
+        </section>
+
+        <section class="portfolio-filter">
+            <button class="filter-btn active" data-filter="all">全部</button>
+            <button class="filter-btn" data-filter="web">网站开发</button>
+            <button class="filter-btn" data-filter="game">游戏开发</button>
+            <button class="filter-btn" data-filter="other">其他项目</button>
+        </section>
+
+        <section class="portfolio-grid">
+            <!-- 作品项目将通过JavaScript动态加载 -->
+        </section>
+    </main>
+
+    <div id="project-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <!-- 项目详情将通过JavaScript动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/portfolio.js"></script>
+</body>
+</html> 
