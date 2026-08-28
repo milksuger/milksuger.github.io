@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>印尼语单词双向测试工具</title>
+    <!-- 引入 Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- 引入 SheetJS 用于解析 Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-hover: #45a049;
+            --danger: #f44336;
+            --danger-hover: #da190b;
+            --bg: #f9f9f9;
+            --card-bg: #ffffff;
+            --text: #333;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        #app { max-width: 600px; margin: 0 auto; background: var(--card-bg); padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: var(--primary); font-size: 24px; }
+        .tabs { display: flex; justify-content: center; margin-bottom: 20px; border-bottom: 2px solid #eee; }
+        .tab { padding: 10px 20px; cursor: pointer; font-weight: bold; color: #777; transition: 0.3s; }
+        .tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); }
+        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; background: var(--primary); color: white; font-size: 16px; margin: 5px; transition: 0.2s; }
+        .btn:hover { background: var(--primary-hover); }
+        .btn-danger { background: var(--danger); }
+        .btn-danger:hover { background: var(--danger-hover); }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
+        .setting-group { margin-bottom: 15px; padding: 15px; background: #f1f1f1; border-radius: 8px; }
+        .setting-group label { margin-right: 15px; cursor: pointer; }
+        .test-card { text-align: center; padding: 30px 10px; }
+        .word-display { font-size: 40px; font-weight: bold; margin-bottom: 20px; color: #222; }
+        .answer-display { font-size: 24px; color: var(--primary); margin: 20px 0; min-height: 30px; }
+        input[type="text"] { width: 80%; padding: 12px; font-size: 18px; text-align: center; border: 2px solid #ddd; border-radius: 8px; outline: none; margin-bottom: 15px; }
+        input[type="text"]:focus { border-color: var(--primary); }
+        .result-msg { font-size: 18px; margin-bottom: 15px; font-weight: bold; }
+        .correct { color: var(--primary); }
+        .incorrect { color: var(--danger); }
+        .stats { display: flex; justify-content: space-between; margin-top: 20px; font-size: 14px; color: #666; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .file-upload { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <h1>🇮🇩 印尼语双向背词神器</h1>
+    
+    <!-- 顶部导航 -->
+    <div class="tabs">
+        <div class="tab" :class="{active: currentTab === 'test'}" @click="switchTab('test')">测验台</div>
+        <div class="tab" :class="{active: currentTab === 'words'}" @click="switchTab('words')">词库管理 ({{vocabList.length}})</div>
+        <div class="tab" :class="{active: currentTab === 'mistakes'}" @click="switchTab('mistakes')">错题本 ({{mistakeList.length}})</div>
+    </div>
+
+    <!-- 1. 词库管理面板 -->
+    <div v-if="currentTab === 'words'">
+        <div class="file-upload">
+            <input type="file" ref="fileInput" accept=".txt,.xls,.xlsx,.csv" @change="handleFileUpload">
+            <button class="btn btn-danger" @click="clearVocab" v-if="vocabList.length > 0">清空词库</button>
+        </div>
+        <p style="font-size: 12px; color: #666;">* 支持 txt(逗号分隔) 或 Excel(第一列印尼语，第二列汉语)</p>
+        
+        <div style="max-height: 400px; overflow-y: auto;">
+            <table v-if="vocabList.length > 0">
+                <tr><th>印尼语</th><th>汉语</th></tr>
+                <tr v-for="word in vocabList" :key="word.id">
+                    <td>{{ word.idn }}</td>
+                    <td>{{ word.chn }}</td>
+                </tr>
+            </table>
+            <p v-else style="text-align: center; color: #999; margin-top: 30px;">暂无词库，请先上传文件。</p>
+        </div>
+    </div>
+
+    <!-- 2. 测试面板 -->
+    <div v-if="currentTab === 'test'">
+        <!-- 设置区 (未在测试中时显示) -->
+        <div v-if="!isTesting" class="settings">
+            <div class="setting-group">
+                <p><b>测试方向：</b></p>
+                <label><input type="radio" value="idn2chn" v-model="settings.direction"> 印译汉</label>
+                <label><input type="radio" value="chn2idn" v-model="settings.direction"> 汉译印</label>
+                <label><input type="radio" value="mixed" v-model="settings.direction"> 混合模式</label>
+            </div>
+            <div class="setting-group">
+                <p><b>交互方式：</b></p>
+                <label><input type="radio" value="typing" v-model="settings.interaction"> 默写模式 (需打字)</label>
+                <label><input type="radio" value="flashcard" v-model="settings.interaction"> 闪卡模式 (自评判)</label>
+            </div>
+            <div style="text-align: center;">
+                <button class="btn" style="width: 100%; font-size: 18px;" @click="startTest('all')" :disabled="vocabList.length === 0">
+                    开始全局测试
+                </button>
+            </div>
+        </div>
+
+        <!-- 测验进行中 -->
+        <div v-else class="test-card">
+            <div class="word-display">{{ currentQuestion.question }}</div>
+            
+            <!-- 闪卡模式 -->
+            <div v-if="settings.interaction === 'flashcard'">
+                <div v-if="!showAnswer">
+                    <button class="btn" @click="showAnswer = true">查看答案</button>
+                </div>
+                <div v-else>
+                    <div class="answer-display">{{ currentQuestion.answer }}</div>
+                    <button class="btn" @click="submitFlashcard(true)">✅ 认识</button>
+                    <button class="btn btn-danger" @click="submitFlashcard(false)">❌ 不认识</button>
+                </div>
+            </div>
+
+            <!-- 默写模式 -->
+            <div v-if="settings.interaction === 'typing'">
+                <div v-if="!showAnswer">
+                    <input type="text" v-model="userInput" @keyup.enter="submitTyping" placeholder="请输入答案..." ref="answerInput">
+                    <br>
+                    <button class="btn" @click="submitTyping">提交答案</button>
+                    <button class="btn btn-danger" @click="giveUpTyping">不会</button>
+                </div>
+                <div v-else>
+                    <div class="result-msg" :class="isCurrentCorrect ? 'correct' : 'incorrect'">
+                        {{ isCurrentCorrect ? '✅ 答对了！' : '❌ 答错了！' }}
+                    </div>
+                    <div class="answer-display">正确答案：{{ currentQuestion.answer }}</div>
+                    <button class="btn" @click="nextQuestion">下一题</button>
+                </div>
+            </div>
+
+            <div class="stats">
+                <span>进度：{{ currentIndex + 1 }} / {{ testQueue.length }}</span>
+                <span>当前模式：{{ getModeName() }}</span>
+                <span style="cursor: pointer; color: var(--danger);" @click="stopTest">结束测试</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. 错题本面板 -->
+    <div v-if="currentTab === 'mistakes'">
+        <div v-if="mistakeList.length > 0">
+            <div style="text-align: center; margin-bottom: 15px;">
+                <button class="btn" @click="startTest('mistakes')">复习错题本 ({{mistakeList.length}}词)</button>
+            </div>
+            <div style="max-height: 400px; overflow-y: auto;">
+                <table>
+                    <tr><th>印尼语</th><th>汉语</th><th>错误次数</th></tr>
+                    <tr v-for="word in mistakeList" :key="word.id">
+                        <td>{{ word.idn }}</td>
+                        <td>{{ word.chn }}</td>
+                        <td style="color: var(--danger); font-weight: bold;">{{ word.failCount }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <p v-else style="text-align: center; color: #999; margin-top: 30px;">太棒了！当前没有错题。</p>
+    </div>
+</div>
+
+<script>
+const { createApp, ref, computed, nextTick, onMounted, watch } = Vue;
+
+createApp({
+    setup() {
+        // 数据状态
+        const currentTab = ref('words');
+        const vocabList = ref([]);
+        
+        // 测试相关状态
+        const settings = ref({ direction: 'idn2chn', interaction: 'typing' });
+        const isTesting = ref(false);
+        const testQueue = ref([]);
+        const currentIndex = ref(0);
+        const showAnswer = ref(false);
+        const userInput = ref('');
+        const isCurrentCorrect = ref(false);
+        const currentQuestionType = ref('idn2chn'); // 记录当前这一题的具体方向(针对混合模式)
+
+        // 挂载时从本地存储加载
+        onMounted(() => {
+            const saved = localStorage.getItem('vocab_data');
+            if (saved) vocabList.value = JSON.parse(saved);
+        });
+
+        // 监听词库变化自动保存
+        watch(vocabList, (newVal) => {
+            localStorage.setItem('vocab_data', JSON.stringify(newVal));
+        }, { deep: true });
+
+        // 错题列表 (failCount > 0)
+        const mistakeList = computed(() => {
+            return vocabList.value.filter(v => v.failCount > 0).sort((a,b) => b.failCount - a.failCount);
+        });
+
+        // 生成唯一ID
+        const generateId = () => Math.random().toString(36).substr(2, 9);
+
+        // 切换标签页
+        const switchTab = (tab) => {
+            if (isTesting.value && tab !== 'test') {
+                if(!confirm('测试正在进行中，切换将中断测试，是否继续？')) return;
+                stopTest();
+            }
+            currentTab.value = tab;
+        };
+
+        // --- 文件解析逻辑 ---
+        const handleFileUpload = (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            const extension = file.name.split('.').pop().toLowerCase();
+
+            if (extension === 'txt') {
+                reader.onload = (e) => {
+                    const text = e.target.result;
+                    parseTxt(text);
+                };
+                reader.readAsText(file);
+            } else if (['xls', 'xlsx', 'csv'].includes(extension)) {
+                reader.onload = (e) => {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, {type: 'array'});
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(firstSheet, {header: 1});
+                    parseArray(json);
+                };
+                reader.readAsArrayBuffer(file);
+            } else {
+                alert('不支持的文件格式！');
+            }
+            // 清空input，方便重复上传同一文件
+            event.target.value = '';
+        };
+
+        const parseTxt = (text) => {
+            const lines = text.split('\n');
+            const newVocabs = [];
+            lines.forEach(line => {
+                line = line.trim();
+                if (!line) return;
+                // 支持中英文逗号分割
+                const parts = line.split(/[,，]/);
+                if (parts.length >= 2) {
+                    newVocabs.push({
+                        id: generateId(),
+                        idn: parts[0].trim(),
+                        chn: parts[1].trim(),
+                        failCount: 0
+                    });
+                }
+            });
+            mergeVocab(newVocabs);
+        };
+
+        const parseArray = (rows) => {
+            const newVocabs = [];
+            rows.forEach(row => {
+                if (row.length >= 2 && row[0] && row[1]) {
+                    newVocabs.push({
+                        id: generateId(),
+                        idn: String(row[0]).trim(),
+                        chn: String(row[1]).trim(),
+                        failCount: 0
+                    });
+                }
+            });
+            mergeVocab(newVocabs);
+        };
+
+        const mergeVocab = (newVocabs) => {
+            vocabList.value = [...vocabList.value, ...newVocabs];
+            alert(`成功导入 ${newVocabs.length} 个单词！`);
+        };
+
+        const clearVocab = () => {
+            if(confirm('确定要清空所有单词和错题记录吗？此操作不可恢复！')) {
+                vocabList.value = [];
+            }
+        };
+
+        // --- 测试逻辑 ---
+        const startTest = (source) => {
+            let sourceList = source === 'mistakes' ? mistakeList.value : vocabList.value;
+            if (sourceList.length === 0) return;
+            
+            // 打乱数组 (Fisher-Yates)
+            let queue = JSON.parse(JSON.stringify(sourceList));
+            for (let i = queue.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [queue[i], queue[j]] = [queue[j], queue[i]];
+            }
+            
+            testQueue.value = queue;
+            currentIndex.value = 0;
+            isTesting.value = true;
+            currentTab.value = 'test';
+            prepareQuestion();
+        };
+
+        const stopTest = () => {
+            isTesting.value = false;
+        };
+
+        const currentQuestion = computed(() => {
+            if (testQueue.value.length === 0 || currentIndex.value >= testQueue.value.length) return {};
+            const word = testQueue.value[currentIndex.value];
+            
+            let q = '', a = '';
+            if (currentQuestionType.value === 'idn2chn') {
+                q = word.idn; a = word.chn;
+            } else {
+                q = word.chn; a = word.idn;
+            }
+            return { question: q, answer: a, wordObj: word };
+        });
+
+        const prepareQuestion = () => {
+            showAnswer.value = false;
+            userInput.value = '';
+            isCurrentCorrect.value = false;
+            
+            // 决定这一题的方向
+            if (settings.value.direction === 'mixed') {
+                currentQuestionType.value = Math.random() > 0.5 ? 'idn2chn' : 'chn2idn';
+            } else {
+                currentQuestionType.value = settings.value.direction;
+            }
+
+            // 自动聚焦输入框
+            if (settings.value.interaction === 'typing') {
+                nextTick(() => {
+                    const inputEl = document.querySelector('input[type="text"]');
+                    if(inputEl) inputEl.focus();
+                });
+            }
+        };
+
+        // 模糊匹配核心算法
+        const checkMatch = (input, target) => {
+            if (!input.trim()) return false;
+            const inputStr = input.trim().toLowerCase();
+            const targetStr = target.trim().toLowerCase();
+            
+            // 如果完全相等
+            if (inputStr === targetStr) return true;
+            
+            // 按照常见标点符号拆分目标答案
+            const validAnswers = targetStr.split(/[\/\,\，\、\;\；]/).map(s => s.trim()).filter(s => s);
+            
+            // 如果用户的输入正好等于其中一个拆分选项
+            if (validAnswers.includes(inputStr)) return true;
+            
+            return false;
+        };
+
+        // 默写模式提交
+        const submitTyping = () => {
+            if (!userInput.value.trim()) return;
+            const isMatch = checkMatch(userInput.value, currentQuestion.value.answer);
+            handleResult(isMatch);
+        };
+
+        // 默写模式放弃（直接算错）
+        const giveUpTyping = () => {
+            handleResult(false);
+        };
+
+        // 闪卡模式提交
+        const submitFlashcard = (isKnown) => {
+            handleResult(isKnown);
+            nextQuestion(); // 闪卡模式点击完直接进入下一题
+        };
+
+        // 处理正确或错误记录
+        const handleResult = (isCorrect) => {
+            isCurrentCorrect.value = isCorrect;
+            showAnswer.value = true;
+            
+            // 同步修改原数组中的 failCount
+            const realWord = vocabList.value.find(w => w.id === currentQuestion.value.wordObj.id);
+            if (realWord) {
+                if (!isCorrect) {
+                    realWord.failCount += 1;
+                } else if (isCorrect && realWord.failCount > 0) {
+                    realWord.failCount -= 1; // 答对了降低错题权重
+                }
+            }
+        };
+
+        const nextQuestion = () => {
+            if (currentIndex.value < testQueue.value.length - 1) {
+                currentIndex.value++;
+                prepareQuestion();
+            } else {
+                alert('测试完成！');
+                stopTest();
+            }
+        };
+
+        const getModeName = () => {
+            const dir = settings.value.direction === 'idn2chn' ? '印译汉' : (settings.value.direction === 'chn2idn' ? '汉译印' : '混合模式');
+            const type = settings.value.interaction === 'typing' ? '默写' : '闪卡';
+            return `${dir} - ${type}`;
+        };
+
+        return {
+            currentTab, vocabList, mistakeList, settings, switchTab,
+            handleFileUpload, clearVocab,
+            isTesting, testQueue, currentIndex, showAnswer, userInput, isCurrentCorrect,
+            startTest, stopTest, currentQuestion, submitTyping, giveUpTyping, submitFlashcard, nextQuestion, getModeName
+        };
+    }
+}).mount('#app');
+</script>
+</body>
+</html>
