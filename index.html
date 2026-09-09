@@ -50,7 +50,9 @@ body.toc-fold #wrap{margin-left:0}
 #toc a .n{color:var(--muted);font-size:13px;margin-right:6px}
 #wrap{margin-left:250px;padding:88px 20px 120px;transition:margin-left .2s ease}
 #tools{display:flex;gap:8px;align-items:center}
+#tools .ts-head{display:none}
 #setbtn{display:none}
+body.lock{overflow:hidden}
 #chapter{max-width:var(--pw,760px);margin:0 auto}
 #chapter h2{font-size:1.5em;margin:0 0 4px}
 #chapter .meta{color:var(--muted);font-size:13px;margin-bottom:26px;font-family:system-ui,sans-serif}
@@ -82,8 +84,11 @@ mark{background:var(--mark);color:inherit;border-radius:2px}
   button,select{height:38px}
   #q{flex:1;min-width:0;font-size:16px;height:38px}
   #setbtn{display:inline-block;min-width:44px;font-size:15px}
-  #tools{display:none;position:fixed;left:0;right:0;bottom:0;z-index:85;flex-direction:column;align-items:stretch;gap:12px;padding:18px 16px calc(18px + env(safe-area-inset-bottom));background:var(--panel);border-top:1px solid var(--line);border-radius:14px 14px 0 0;box-shadow:0 -6px 30px rgba(0,0,0,.15)}
+  #tools{display:none;position:fixed;left:0;right:0;bottom:0;z-index:95;flex-direction:column;align-items:stretch;gap:14px;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:var(--panel);border-top:1px solid var(--line);border-radius:14px 14px 0 0;box-shadow:0 -6px 30px rgba(0,0,0,.2)}
   body.tools-open #tools{display:flex}
+  #tools .ts-head{display:flex;justify-content:space-between;align-items:center;font-family:system-ui,sans-serif}
+  #tools .ts-head b{font-size:15px}
+  #tools .ts-head button{height:36px;padding:0 14px;font-size:14px;background:var(--accent);color:#fff;border:none;border-radius:6px}
   #tools select,#tools button{width:100%;font-size:16px;height:44px}
   #pager{position:fixed;left:0;right:0;bottom:0;max-width:none;margin:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:var(--panel);border-top:1px solid var(--line);gap:12px}
   #pager button{flex:1;height:44px;font-size:15px}
@@ -99,7 +104,8 @@ mark{background:var(--mark);color:inherit;border-radius:2px}
   <span class="spacer"></span>
   <input type="search" id="q" placeholder="搜索全库…">
   <button id="setbtn">Aa</button>
-  <span id="tools">
+  <div id="tools">
+    <div class="ts-head"><b>显示设置</b><button id="tsdone">完成</button></div>
     <select id="fs" title="字号">
       <option value="16px">字小</option><option value="18px">字中</option><option value="21px">字大</option><option value="24px">字特大</option>
     </select>
@@ -109,8 +115,8 @@ mark{background:var(--mark);color:inherit;border-radius:2px}
     <select id="pw" title="页宽">
       <option value="680px">窄</option><option value="760px">中</option><option value="900px">宽</option>
     </select>
-    <button id="theme">🌙</button>
-  </span>
+    <button id="theme">🌙 夜间模式切换</button>
+  </div>
 </div>
 <div id="prog"></div>
 <div id="backdrop"></div>
@@ -155,8 +161,14 @@ $('#lh').onchange = e=>{ S.lh=e.target.value; applySettings(); save(); };
 $('#pw').onchange = e=>{ S.pw=e.target.value; applySettings(); save(); };
 $('#fold').onclick = ()=>{ S.fold = !S.fold; applySettings(); save(); };
 $('#tocbtn').onclick = ()=> document.body.classList.toggle('toc-open');
-$('#setbtn').onclick = ()=> document.body.classList.toggle('tools-open');
-$('#backdrop').onclick = ()=> document.body.classList.remove('toc-open','tools-open');
+function toggleSheet(force){
+  const open = (force !== undefined) ? force : !document.body.classList.contains('tools-open');
+  document.body.classList.toggle('tools-open', open);
+  document.body.classList.toggle('lock', open);
+}
+$('#setbtn').onclick = ()=> toggleSheet();
+$('#tsdone').onclick = ()=> toggleSheet(false);
+$('#backdrop').onclick = ()=>{ toggleSheet(false); document.body.classList.remove('toc-open'); };
 
 /* ---------- 移动端滑动翻章 ---------- */
 let tx=0, ty=0, tt=0;
@@ -227,7 +239,7 @@ async function loadChapter(i, opts={}){
   document.title = `第${ch.num}章 ${ch.title} · 北派续写`;
   $('#chapter').innerHTML =
     `<h2>第${ch.num}章　${ch.title}</h2>` +
-    `<div class="meta">${ch.id} · 约 ${ch.words} 字 · [续写草稿 AI_HYPOTHESIS]</div>` + ch.html;
+    `<div class="meta">${ch.words}字</div>` + ch.html;
   $('#prev').disabled = i<=0;
   $('#next').disabled = i>=catalog.length-1;
   if(opts.restore && S.y){ window.scrollTo(0, S.y); }
@@ -331,6 +343,7 @@ document.addEventListener('keydown', e=>{
   if(e.key==='ArrowRight') loadChapter(cur+1);
   if(e.key==='/'){ e.preventDefault(); $('#q').focus(); }
   if(e.key==='t'||e.key==='T') $('#fold').click();
+  if(e.key==='Escape') toggleSheet(false);
 });
 
 applySettings();
