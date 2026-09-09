@@ -51,6 +51,8 @@ body.toc-fold #wrap{margin-left:0}
 #wrap{margin-left:250px;padding:88px 20px 120px;transition:margin-left .2s ease}
 #tools{display:flex;gap:8px;align-items:center}
 #tools .ts-head{display:none}
+#tools .ts-row{display:flex;align-items:center;gap:6px}
+#tools .ts-row label{display:none}
 #setbtn{display:none}
 body.lock{overflow:hidden}
 #chapter{max-width:var(--pw,760px);margin:0 auto}
@@ -89,6 +91,9 @@ mark{background:var(--mark);color:inherit;border-radius:2px}
   #tools .ts-head{display:flex;justify-content:space-between;align-items:center;font-family:system-ui,sans-serif}
   #tools .ts-head b{font-size:15px}
   #tools .ts-head button{height:36px;padding:0 14px;font-size:14px;background:var(--accent);color:#fff;border:none;border-radius:6px}
+  #tools .ts-row{display:flex;align-items:center;gap:12px}
+  #tools .ts-row label{display:block;flex:0 0 3.5em;font-size:15px;color:var(--muted);font-family:system-ui,sans-serif}
+  #tools .ts-row select{flex:1;min-width:0}
   #tools select,#tools button{width:100%;font-size:16px;height:44px}
   #pager{position:fixed;left:0;right:0;bottom:0;max-width:none;margin:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:var(--panel);border-top:1px solid var(--line);gap:12px}
   #pager button{flex:1;height:44px;font-size:15px}
@@ -106,16 +111,22 @@ mark{background:var(--mark);color:inherit;border-radius:2px}
   <button id="setbtn">Aa</button>
   <div id="tools">
     <div class="ts-head"><b>显示设置</b><button id="tsdone">完成</button></div>
-    <select id="fs" title="字号">
-      <option value="16px">字小</option><option value="18px">字中</option><option value="21px">字大</option><option value="24px">字特大</option>
-    </select>
-    <select id="lh" title="行距">
-      <option value="1.7">行紧</option><option value="1.9">行中</option><option value="2.2">行松</option>
-    </select>
-    <select id="pw" title="页宽">
-      <option value="680px">窄</option><option value="760px">中</option><option value="900px">宽</option>
-    </select>
-    <button id="theme">🌙 夜间模式切换</button>
+    <div class="ts-row"><label>字号</label>
+      <select id="fs">
+        <option value="16px">字小（16px）</option><option value="18px">字中（18px）</option><option value="21px">字大（21px）</option><option value="24px">字特大（24px）</option>
+      </select>
+    </div>
+    <div class="ts-row"><label>行距</label>
+      <select id="lh">
+        <option value="1.7">行紧（1.7）</option><option value="1.9">行中（1.9）</option><option value="2.2">行松（2.2）</option>
+      </select>
+    </div>
+    <div class="ts-row"><label>页宽</label>
+      <select id="pw">
+        <option value="680px">窄（680px）</option><option value="760px">中（760px）</option><option value="900px">宽（900px）</option>
+      </select>
+    </div>
+    <button id="theme">🌙 夜间 / 日间模式切换</button>
   </div>
 </div>
 <div id="prog"></div>
@@ -345,6 +356,17 @@ document.addEventListener('keydown', e=>{
   if(e.key==='t'||e.key==='T') $('#fold').click();
   if(e.key==='Escape') toggleSheet(false);
 });
+
+/* ---------- 修复层叠上下文：窄屏时面板挂到body下，脱离顶栏的z-index隔离 ---------- */
+const toolsEl = $('#tools');
+const toolsMq = window.matchMedia('(max-width:860px)');
+function placeTools(){
+  if(toolsMq.matches){ document.body.appendChild(toolsEl); }
+  else { $('#bar').appendChild(toolsEl); }
+}
+if(toolsMq.addEventListener) toolsMq.addEventListener('change', placeTools);
+else if(toolsMq.addListener) toolsMq.addListener(placeTools);
+placeTools();
 
 applySettings();
 loadCatalog();
