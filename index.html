@@ -153,6 +153,38 @@ let S = Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY)||'{}'));
 let catalog = [], cur = -1;
 const cache = {}; let allLoaded = false; let hits = [];
 
+/* ---------- 隐私友好的访问统计（配置占位时自动关闭） ---------- */
+const GOATCOUNTER_ENDPOINT = 'https://YOURCODE.goatcounter.com/count';
+function setupAnalytics(){
+  if(!GOATCOUNTER_ENDPOINT || GOATCOUNTER_ENDPOINT.includes('YOURCODE')) return;
+  window.goatcounter = {
+    referrer: function(){
+      const u = new URL(location.href);
+      const campaign = ['utm_source','utm_medium','utm_campaign','utm_content']
+        .map(k => u.searchParams.get(k) ? `${k}=${u.searchParams.get(k)}` : '')
+        .filter(Boolean).join('&');
+      return campaign ? `campaign:${campaign}` : document.referrer;
+    }
+  };
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://gc.zgo.at/count.js';
+  s.dataset.goatcounter = GOATCOUNTER_ENDPOINT;
+  document.head.appendChild(s);
+}
+function trackChapter(c){
+  if(!c || GOATCOUNTER_ENDPOINT.includes('YOURCODE')) return;
+  const vars = {path:`/chapter/${c.id}`, title:`第${c.num}章 ${c.title}`};
+  let tries = 0;
+  const send = ()=>{
+    if(window.goatcounter && typeof window.goatcounter.count === 'function'){
+      window.goatcounter.count(vars); return;
+    }
+    if(++tries < 20) setTimeout(send, 100);
+  };
+  send();
+}
+
 function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
 function applySettings(){
   document.body.classList.toggle('toc-fold', !!S.fold);
@@ -227,9 +259,7 @@ async function loadCatalog(){
     $('#chapter').innerHTML =
       `<div class="hint"><strong>无法加载章节目录。</strong><br>
        如果你是直接双击打开的本文件：浏览器出于安全限制不允许 file:// 页面读取本地数据文件。<br>
-       两种解决办法：<br>
-       ① 运行 <code>python tools/build_reader.py --serve</code> 后访问本地服务；<br>
-       ② 打开同目录的 <code>offline.html</code>（合并离线版，双击即可用）。</div>`;
+       请运行 <code>python tools/build_reader.py --serve</code> 后访问本地服务。</div>`;
   }
 }
 
@@ -257,6 +287,7 @@ async function loadChapter(i, opts={}){
   else { S.y = 0; window.scrollTo(0,0); }
   updateProg();
   if($('#q').value.trim()) highlight($('#q').value.trim());
+  trackChapter(ch);
 }
 function go(i){ loadChapter(i); }
 $('#prev').onclick = ()=> loadChapter(cur-1);
@@ -369,6 +400,7 @@ else if(toolsMq.addListener) toolsMq.addListener(placeTools);
 placeTools();
 
 applySettings();
+setupAnalytics();
 loadCatalog();
 </script>
 </body>
