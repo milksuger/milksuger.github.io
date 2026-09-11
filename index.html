@@ -159,7 +159,7 @@ const cache = {}; let allLoaded = false; let hits = [];
 
 /* ---------- 隐私友好的访问统计（配置占位时自动关闭） ---------- */
 const GOATCOUNTER_ENDPOINT = 'https://kaidan.goatcounter.com/count';
-const WALINE_SERVER_URL = 'https://YOUR-WALINE-SERVER.example.com';
+const WALINE_SERVER_URL = 'https://kaidan-waline.vercel.app';
 let walineReady = null, walineInstance = null, commentRequest = 0;
 function setupAnalytics(){
   if(!GOATCOUNTER_ENDPOINT || GOATCOUNTER_ENDPOINT.includes('YOURCODE')) return;
