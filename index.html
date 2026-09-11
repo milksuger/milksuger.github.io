@@ -154,7 +154,7 @@ let catalog = [], cur = -1;
 const cache = {}; let allLoaded = false; let hits = [];
 
 /* ---------- 隐私友好的访问统计（配置占位时自动关闭） ---------- */
-const GOATCOUNTER_ENDPOINT = 'https://YOURCODE.goatcounter.com/count';
+const GOATCOUNTER_ENDPOINT = 'https://kaidan.goatcounter.com/count';
 function setupAnalytics(){
   if(!GOATCOUNTER_ENDPOINT || GOATCOUNTER_ENDPOINT.includes('YOURCODE')) return;
   window.goatcounter = {
