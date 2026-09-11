@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" id="tc" content="#f6f2e9">
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css">
 <title>北派盗墓笔记 · 续写阅读器</title>
 <style>
 :root{
@@ -75,6 +76,8 @@ mark{background:var(--mark);color:inherit;border-radius:2px}
 #results .rt{font-size:13px;color:var(--accent);margin-bottom:3px}
 #results .rc{font-size:13px;color:var(--muted);line-height:1.6}
 #results .empty{color:var(--muted);font-size:14px;padding:10px}
+#comments{max-width:var(--pw,760px);margin:48px auto 0;padding:24px 0 0;border-top:1px solid var(--line)}
+#comments .comment-hint{padding:16px;border:1px solid var(--line);border-radius:8px;color:var(--muted);font-size:14px;line-height:1.7}
 @media (max-width:860px){
   #toc{transform:translateX(-100%)}
   body.toc-open #toc{transform:none;box-shadow:0 0 40px rgba(0,0,0,.25)}
@@ -140,6 +143,7 @@ mark{background:var(--mark);color:inherit;border-radius:2px}
     <button id="next">下一章 →</button>
   </div>
 </main>
+<section id="comments" aria-label="本章评论"></section>
 <div id="results"></div>
 
 <script>
@@ -155,6 +159,8 @@ const cache = {}; let allLoaded = false; let hits = [];
 
 /* ---------- 隐私友好的访问统计（配置占位时自动关闭） ---------- */
 const GOATCOUNTER_ENDPOINT = 'https://kaidan.goatcounter.com/count';
+const WALINE_SERVER_URL = 'https://YOUR-WALINE-SERVER.example.com';
+let walineReady = null, walineInstance = null, commentRequest = 0;
 function setupAnalytics(){
   if(!GOATCOUNTER_ENDPOINT || GOATCOUNTER_ENDPOINT.includes('YOURCODE')) return;
   window.goatcounter = {
@@ -183,6 +189,44 @@ function trackChapter(c){
     if(++tries < 20) setTimeout(send, 100);
   };
   send();
+}
+function ensureWaline(){
+  if(window.Waline) return Promise.resolve(window.Waline);
+  if(walineReady) return walineReady;
+  walineReady = new Promise((resolve, reject)=>{
+    const s = document.createElement('script');
+    s.src = 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+    s.onload = ()=>resolve(window.Waline);
+    s.onerror = ()=>reject(new Error('Waline script failed to load'));
+    document.head.appendChild(s);
+  });
+  return walineReady;
+}
+async function renderComments(c){
+  const request = ++commentRequest;
+  const el = $('#comments');
+  if(walineInstance && typeof walineInstance.destroy === 'function') walineInstance.destroy();
+  walineInstance = null;
+  if(!c) { el.innerHTML = ''; return; }
+  if(!WALINE_SERVER_URL || WALINE_SERVER_URL.includes('YOUR-WALINE-SERVER')){
+    el.innerHTML = '<div class="comment-hint">评论区尚未启用：等待配置免费的 Waline 评论服务。</div>';
+    return;
+  }
+  el.innerHTML = '';
+  try{
+    const Waline = await ensureWaline();
+    if(request !== commentRequest) return;
+    walineInstance = Waline.init({
+      el: '#comments', serverURL: WALINE_SERVER_URL,
+      path: `/chapter/${c.id}`, lang: 'zh-CN',
+      darkMode: 'html[data-theme="dark"]',
+      requiredMeta: ['nick'], pageview: false,
+      placeholder: '写下这一章的感受……'
+    });
+  }catch(e){
+    el.innerHTML = '<div class="comment-hint">评论区暂时无法加载，请稍后重试。</div>';
+    console.warn('Waline unavailable:', e);
+  }
 }
 
 function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
@@ -288,6 +332,7 @@ async function loadChapter(i, opts={}){
   updateProg();
   if($('#q').value.trim()) highlight($('#q').value.trim());
   trackChapter(ch);
+  renderComments(ch);
 }
 function go(i){ loadChapter(i); }
 $('#prev').onclick = ()=> loadChapter(cur-1);
