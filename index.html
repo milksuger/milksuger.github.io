@@ -191,15 +191,8 @@ function trackChapter(c){
   send();
 }
 function ensureWaline(){
-  if(window.Waline) return Promise.resolve(window.Waline);
   if(walineReady) return walineReady;
-  walineReady = new Promise((resolve, reject)=>{
-    const s = document.createElement('script');
-    s.src = 'https://unpkg.com/@waline/client@v3/dist/waline.js';
-    s.onload = ()=>resolve(window.Waline);
-    s.onerror = ()=>reject(new Error('Waline script failed to load'));
-    document.head.appendChild(s);
-  });
+  walineReady = import('https://unpkg.com/@waline/client@v3/dist/waline.js');
   return walineReady;
 }
 async function renderComments(c){
@@ -214,9 +207,9 @@ async function renderComments(c){
   }
   el.innerHTML = '';
   try{
-    const Waline = await ensureWaline();
+    const { init } = await ensureWaline();
     if(request !== commentRequest) return;
-    walineInstance = Waline.init({
+    walineInstance = init({
       el: '#comments', serverURL: WALINE_SERVER_URL,
       path: `/chapter/${c.id}`, lang: 'zh-CN',
       darkMode: 'html[data-theme="dark"]',
